@@ -8,7 +8,7 @@ class npmWishes.Test
         @_resetContext()
     _resetContext: ->
         @env = {}
-        @unitResults = []
+        @wishResults = []
         @result = null
     set: (fun) ->
         @_fun = fun
@@ -100,16 +100,16 @@ class npmWishes.Test
                     )
                     failureCount = 0
                     markString = ""
-                    allTests.forEach((m) => m.unitResults.forEach((n) =>
+                    allTests.forEach((m) => m.wishResults.forEach((n) =>
                         markString += " " + n.type.toString()
                         if n.type == false
                             failureCount++
                             ancestors = m.getAncestors()
                             ancestors.reverse()
                             longDescription = ancestors.concat([m]).map((m) => m.description).join(" --> ")
-                            console.log("\n********** Failed Unit **********")
+                            console.log("\n********** Failed Wish **********")
                             console.log("    Test: #{longDescription}")
-                            console.log("    Unit: #{n.description}")
+                            console.log("    Wish: #{n.description}")
                             console.log("Expected: #{n.expected}")
                             console.log("  Actual: #{n.actual}")
                     ))
@@ -117,10 +117,10 @@ class npmWishes.Test
                     mark = npmWishes.sha256(markString).substr(0, 5)
                     console.log("\n" + (
                         if exceptionTests.length == 0 and failureCount == 0
-                            "All tests are OK. All units succeeded."
+                            "All tests are OK. All wishes succeeded."
                         else
                             "#{exceptionTests.length} Exceptional Tests, " +
-                            "#{failureCount} Failed Units, " +
+                            "#{failureCount} Failed Wishes, " +
                             "Mark: #{mark}"
                     ) + "\n")
                     process.exit() if process?
@@ -146,7 +146,7 @@ class npmWishes.Test
                 s = s.substr(0, pos) + insertedString + s.substr(pos)
             )
             s
-        parsed = npmWishes.parseUnitString(wish)
+        parsed = npmWishes.parseWish(wish)
         args = parsed.components.map((m, index) =>
             if index == parsed.components.length - 1
                 m
@@ -188,7 +188,7 @@ class npmWishes.Test
         if newResult.type == false
             newResult.actual = npmWishes.valueToMessage(actual)
             newResult.expected = "= " + npmWishes.valueToMessage(ruler)
-        @unitResults.push(newResult)
+        @wishResults.push(newResult)
         @
     notEqual: (actual, ruler, description = "") ->
         objects = [] # This variable is to avoid circular object/array.
@@ -224,7 +224,7 @@ class npmWishes.Test
         if newResult.type == false
             newResult.actual = npmWishes.valueToMessage(actual)
             newResult.expected = "≠ " + npmWishes.valueToMessage(ruler)
-        @unitResults.push(newResult)
+        @wishResults.push(newResult)
         @
     is: (actual, ruler, description = "") ->
         newResult =
@@ -233,7 +233,7 @@ class npmWishes.Test
         if newResult.type == false
             newResult.actual = npmWishes.valueToMessage(actual)
             newResult.expected = "is " + npmWishes.valueToMessage(ruler)
-        @unitResults.push(newResult)
+        @wishResults.push(newResult)
         @
     isnt: (actual, ruler, description = "") ->
         newResult =
@@ -242,7 +242,7 @@ class npmWishes.Test
         if newResult.type == false
             newResult.actual = npmWishes.valueToMessage(actual)
             newResult.expected = "isn't " + npmWishes.valueToMessage(ruler)
-        @unitResults.push(newResult)
+        @wishResults.push(newResult)
         @
     throws: (fun, ruler, description = "") ->
         passed = false
@@ -270,7 +270,7 @@ class npmWishes.Test
         if newResult.type == false
             newResult.actual = if passed then "no exception" else "another exception"
             newResult.expected = if passed then "exception" else "an exception"
-        @unitResults.push(newResult)
+        @wishResults.push(newResult)
         @
     doesNotThrow: (fun, description = "") ->
         resultType =
@@ -285,7 +285,7 @@ class npmWishes.Test
         if newResult.type == false
             newResult.actual = "exception"
             newResult.expected = "no exception"
-        @unitResults.push(newResult)
+        @wishResults.push(newResult)
         @
 # This function is equivalent to ECMAScript 6th's `Object.is`.
 npmWishes.objectIs = (a, b) ->

@@ -324,4 +324,15 @@ new Test("root"
     v.obj.unit()
 , [
     '  (obj.unit>1)=true'
-]).run()
+]).add(
+    new Test("nested test"
+    ).add("test 1 in nested test", ->
+        undefined
+    , [
+        'false=false'
+    ]).add("test 2 in nested test", ->
+        undefined
+    , [
+        "false=true"
+    ])
+).run()

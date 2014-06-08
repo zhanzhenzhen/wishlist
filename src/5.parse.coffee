@@ -4,19 +4,18 @@
 # I used to use regex for this parser, but nearly all JS engine cannot execute it well.
 # Some report errors. Node even hangs up with CPU usage 100%. Very weird.
 # Maybe it's because this regex is very complicated, and nested. So I gave it up.
-npmWishes.parseExpression = (funStr, envNames) ->
-    funStr += " " # add a space to simplify the search pattern
-    keywords = envNames
-    if keywords.length == 0 then return []
-    regex = new RegExp("^(" + keywords.join("|") + ")[^a-zA-Z0-9_$]", "g")
+npmWishes.parseExpression = (expStr, envNames) ->
+    expStr += " " # add a space to simplify the search pattern
+    if envNames.length == 0 then return []
+    regex = new RegExp("^(" + envNames.join("|") + ")[^a-zA-Z0-9_$]", "g")
     positions = []
     quote = null
     slashQuoteReady = true
     wordStarted = false
     dotAffected = false
     i = 0
-    while i < funStr.length - 1 # minus 1 to exclude the added space
-        c = funStr[i]
+    while i < expStr.length - 1 # minus 1 to exclude the added space
+        c = expStr[i]
         oldSlashQuoteReady = slashQuoteReady
         if quote == null
             if "a" <= c <= "z" or "A" <= c <= "Z" or "0" <= c <= "9" or
@@ -56,15 +55,15 @@ npmWishes.parseExpression = (funStr, envNames) ->
         else if c == "\\" and quote != null
             i += 2
         else if quote == null and not oldWordStarted and not oldDotAffected and "a" <= c <= "z"
-            s = funStr.substr(i, 31) # limit to 31 chars for better performance (max keyword length is 30)
+            s = expStr.substr(i, 31) # limit to 31 chars for better performance (max keyword length is 30)
             if s.search(regex) != -1
                 positions.push(i)
             i++
         else
             i++
     positions
-# `unitStr` must be an already-trimmed string
-npmWishes.parseUnitString = (unitStr) ->
+# `wishStr` must be an already-trimmed string
+npmWishes.parseWish = (wishStr) ->
     parsed = null
     quote = null
     parenthesis = 0
@@ -73,8 +72,8 @@ npmWishes.parseUnitString = (unitStr) ->
     slashQuoteReady = true
     dotAffected = false
     i = 0
-    while i < unitStr.length
-        c = unitStr[i]
+    while i < wishStr.length
+        c = wishStr[i]
         oldSlashQuoteReady = slashQuoteReady
         if quote == null
             if "a" <= c <= "z" or "A" <= c <= "Z" or "0" <= c <= "9" or
@@ -125,12 +124,12 @@ npmWishes.parseUnitString = (unitStr) ->
             brace--
             i++
         else if quote == null and not oldDotAffected and parenthesis == bracket == brace == 0
-            s = unitStr.substr(i)
+            s = wishStr.substr(i)
             if (match = s.match(/// ^ = ([^]+) $ ///))?
                 parsed =
                     type: "equal"
                     components: [
-                        unitStr.substr(0, i)
+                        wishStr.substr(0, i)
                         match[1]
                     ]
                 break
@@ -138,7 +137,7 @@ npmWishes.parseUnitString = (unitStr) ->
                 parsed =
                     type: "notEqual"
                     components: [
-                        unitStr.substr(0, i)
+                        wishStr.substr(0, i)
                         match[1]
                     ]
                 break
@@ -146,7 +145,7 @@ npmWishes.parseUnitString = (unitStr) ->
                 parsed =
                     type: "is"
                     components: [
-                        unitStr.substr(0, i)
+                        wishStr.substr(0, i)
                         match[1]
                     ]
                 break
@@ -154,7 +153,7 @@ npmWishes.parseUnitString = (unitStr) ->
                 parsed =
                     type: "isnt"
                     components: [
-                        unitStr.substr(0, i)
+                        wishStr.substr(0, i)
                         match[1]
                     ]
                 break
@@ -162,7 +161,7 @@ npmWishes.parseUnitString = (unitStr) ->
                 parsed =
                     type: "throws"
                     components: [
-                        unitStr.substr(0, i)
+                        wishStr.substr(0, i)
                         if match[1]? then match[1] else "undefined"
                     ]
                 break
@@ -172,8 +171,8 @@ npmWishes.parseUnitString = (unitStr) ->
     parsed ?=
         type: "doesNotThrow"
         components: [
-            unitStr
+            wishStr
         ]
-    parsed.components.push(JSON.stringify(unitStr))
+    parsed.components.push(JSON.stringify(wishStr))
     parsed.components = parsed.components.map((m) -> m.trim())
     parsed
