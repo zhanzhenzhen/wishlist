@@ -49,26 +49,28 @@ class npmWishes.Test
             @env = npmWishes.objectClone(@parent.env)
         # We use `setTimeout(..., 0)` only to make all tests "unordered", at least theoretically.
         setTimeout(=>
+            result = null
             if exports? and module?.exports?
                 domain = require("domain").create()
                 domain.on("error", (error) =>
-                    @finish(
+                    result =
                         type: false
                         errorMessage: """
                             Error Name: #{error.name}
                             Error Message: #{error.message}
                             Error Stack: #{error.stack}
                         """
-                    )
                 )
                 domain.run(=> @_fun(@env, @))
             else
                 try
                     @_fun(@env, @)
                 catch
-                    @finish(type: false)
-            if not @async
-                @finish(type: true)
+                    result = {type: false}
+            if not result? and not @async
+                result = {type: true}
+            if result?
+                @finish(result)
         , 0)
         if showsMessage
             allTests = []
