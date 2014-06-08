@@ -1,9 +1,8 @@
 class npmWishes.Test
     constructor: (@description = "") ->
         @_children = []
-        @_fun = null
-        @_interpretedFunction = null
-        @_envFun = null
+        @_fun = =>
+        @_wishes = []
         @async = false
         @parent = null
         @_resetContext()
@@ -11,95 +10,26 @@ class npmWishes.Test
         @env = {}
         @unitResults = []
         @result = null
-    define: (fun) ->
-        @_envFun = fun
-        @
     set: (fun) ->
         @_fun = fun
         @
     get: ->
         @_fun
-    _interpret: ->
-        funStr_834942610148628375 = null
-        # Why wrap all these things into a `do`? Because we want to avoid disclosing variables
-        # to `eval`. The only variable disclosed is `funStr_834942610148628375`, which user
-        # is unlikely to use.
-        do =>
-            funStr = @_fun.toString()
-            # This is only to ensure the argument name will be not used by user.
-            # We must interprete the "pretty" function to an "ugly" function as an intermediate
-            # layer using this mechanism. The missing argument representing the test object
-            # in the "pretty" function will be added, as well as the missing dot notation in
-            # unit declarations.
-            # The key point is that the "pretty" function is legal. It fully complies with
-            # JavaScript (or CoffeeScript) grammars.
-            testArgName = "testArg_834942610148628375"
-            # Recover argument.
-            # not global, only replace first "(...)"
-            funStr = funStr.replace(/\([^\)]*\)/, "(#{testArgName})")
-            # Recover dot notation.
-            npmWishes.parseFunction(funStr).forEach((m, index) =>
-                insertedString = testArgName + "."
-                pos = m + insertedString.length * index
-                funStr = funStr.substr(0, pos) + insertedString + funStr.substr(pos)
-            )
-            # Recover the actual methods from the symbolic `unit` method.
-            # Important: The `unit` method must be symbolic. If it has a real `unit` method,
-            # there is no way to evaluate the variables that is contained in a unit string
-            # inside this method.
-            # Actually, while `set` method begins, `unit` is a symbolic function. As of this position
-            # it's a symbolic method.
-            funStr = funStr.replace(///
-                #{testArgName}\.unit \s* \( \s*
-                (
-                    " (?: [^"\\] | \\. )* " |
-                    ' (?: [^'\\] | \\. )* '
-                )
-                (?:
-                    \s* , \s*
-                    (
-                        " (?: [^"\\] | \\. )* " |
-                        ' (?: [^'\\] | \\. )* '
-                    )
-                )? \s* \)
-            ///g, (match, p1, p2) =>
-                # In Firefox if there's no p2 then p2 is "". This may be a bug of Firefox.
-                # This statement is only a workaround for Firefox.
-                if p2 == "" then p2 = undefined
-                # Why use `eval` to strip p1? Because if we use string methods to strip it,
-                # then escaped characters can't be processed.
-                # If use `JSON.parse` instead, then single quotes string cannot be parsed.
-                unitStr = eval(p1).trim()
-                description = p2 ? JSON.stringify(unitStr)
-                parsed = npmWishes.parseUnitString(unitStr)
-                args = parsed.components
-                args.push(description)
-                "#{testArgName}.#{parsed.type}(#{args.join(', ')})"
-            )
-            npmWishes.parseFunction(funStr, Object.keys(@env)).forEach((m, index) =>
-                insertedString = testArgName + ".env."
-                pos = m + insertedString.length * index
-                funStr = funStr.substr(0, pos) + insertedString + funStr.substr(pos)
-            )
-            funStr_834942610148628375 = funStr
-            # TODO: Maybe a regex is needed? If we later implement another method
-            # named as `finishSomething`, then it won't work correctly. But most likely we
-            # will never implement such methods.
-            @async = funStr.indexOf("#{testArgName}.finish") != -1
-        # `eval` here exactly meets our requirement. It also works in ES5 "strict mode",
-        # because it does not introduce new variables into the surrounding scope.
-        # If an `eval` string has leading or trailing braces, then it must be enclosed
-        # by parentheses, otherwise it can't be parsed or evaluated.
-        @_interpretedFunction = eval("(#{funStr_834942610148628375})")
+    setWishes: (wishes) ->
+        @_wishes = wishes
         @
-    add: (description, fun) ->
+    getWishes: ->
+        @_wishes
+    add: (description, fun, wishes) ->
         if typeof description == "object"
             newChild = description
         else
             if typeof description != "string"
+                wishes = fun
                 fun = description
                 description = ""
-            newChild = new npmWishes.Test(description).set(fun)
+            wishes ?= []
+            newChild = new npmWishes.Test(description).set(fun).setWishes(wishes)
         newChild.parent = @
         @_children.push(newChild)
         @
@@ -117,42 +47,35 @@ class npmWishes.Test
         @_resetContext()
         if @parent?
             @env = npmWishes.objectClone(@parent.env)
-        @_envFun?(@env)
-        if @_fun?
-            @_interpret()
-            # We use `setTimeout(..., 0)` only to make all tests "unordered", at least theoretically.
-            setTimeout(=>
-                doTest = =>
-                    @_interpretedFunction(@)
-                    if not @async then @finish(type: true)
-                if exports? and module?.exports?
-                    domain = require("domain").create()
-                    domain.on("error", (error) =>
-                        @finish(
-                            type: false
-                            errorMessage: """
-                                Error Name: #{error.name}
-                                Error Message: #{error.message}
-                                Error Stack: #{error.stack}
-                            """
-                        )
+        # We use `setTimeout(..., 0)` only to make all tests "unordered", at least theoretically.
+        setTimeout(=>
+            if exports? and module?.exports?
+                domain = require("domain").create()
+                domain.on("error", (error) =>
+                    @finish(
+                        type: false
+                        errorMessage: """
+                            Error Name: #{error.name}
+                            Error Message: #{error.message}
+                            Error Stack: #{error.stack}
+                        """
                     )
-                    domain.run(doTest)
-                else
-                    try
-                        doTest()
-                    catch
-                        @finish(type: false)
-            , 0)
-        @getChildren().forEach((m) =>
-            m.run(false)
-        )
+                )
+                domain.run(=> @_fun(@env, @))
+            else
+                try
+                    @_fun(@env, @)
+                catch
+                    @finish(type: false)
+            if not @async
+                @finish(type: true)
+        , 0)
         if showsMessage
             allTests = []
-            allTests.push(@) if @.get()?
+            allTests.push(@)
             traverse = (test) =>
                 test.getChildren().forEach((m) =>
-                    allTests.push(m) if m.get()?
+                    allTests.push(m)
                     traverse(m)
                 )
             traverse(@)
@@ -204,7 +127,29 @@ class npmWishes.Test
         @
     finish: (result) ->
         @result = result ? {type: true}
+        @getWishes().forEach((m) =>
+            @checkWish(m)
+        )
+        @getChildren().forEach((m) =>
+            m.run(false)
+        )
         @
+    checkWish: (wish) ->
+        interpret = (s) =>
+            npmWishes.parseExpression(s, Object.keys(@env)).forEach((m, index) =>
+                insertedString = "this.env."
+                pos = m + insertedString.length * index
+                s = s.substr(0, pos) + insertedString + s.substr(pos)
+            )
+            s
+        parsed = npmWishes.parseUnitString(wish)
+        args = parsed.components.map((m, index) =>
+            if index == parsed.components.length - 1
+                m
+            else
+                interpret(m)
+        )
+        eval("this.#{parsed.type}(#{args.join(', ')})")
     equal: (actual, ruler, description = "") ->
         objects = [] # This variable is to avoid circular object/array.
         determine = (actual, ruler) =>

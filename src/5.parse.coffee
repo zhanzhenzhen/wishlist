@@ -4,7 +4,7 @@
 # I used to use regex for this parser, but nearly all JS engine cannot execute it well.
 # Some report errors. Node even hangs up with CPU usage 100%. Very weird.
 # Maybe it's because this regex is very complicated, and nested. So I gave it up.
-npmWishes.parseFunction = (funStr, envNames) ->
+npmWishes.parseExpression = (funStr, envNames) ->
     keywords = envNames ? ["finish", "unit"]
     if keywords.length == 0 then return []
     regex = new RegExp("^(" + keywords.join("|") + ")[^a-zA-Z0-9_$]", "g")
@@ -173,5 +173,6 @@ npmWishes.parseUnitString = (unitStr) ->
         components: [
             unitStr
         ]
+    parsed.components.push(JSON.stringify(unitStr))
     parsed.components = parsed.components.map((m) -> m.trim())
     parsed
