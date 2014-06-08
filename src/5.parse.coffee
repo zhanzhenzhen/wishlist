@@ -5,7 +5,8 @@
 # Some report errors. Node even hangs up with CPU usage 100%. Very weird.
 # Maybe it's because this regex is very complicated, and nested. So I gave it up.
 npmWishes.parseExpression = (funStr, envNames) ->
-    keywords = envNames ? ["finish", "unit"]
+    funStr += " " # add a space to simplify the search pattern
+    keywords = envNames
     if keywords.length == 0 then return []
     regex = new RegExp("^(" + keywords.join("|") + ")[^a-zA-Z0-9_$]", "g")
     positions = []
@@ -14,7 +15,7 @@ npmWishes.parseExpression = (funStr, envNames) ->
     wordStarted = false
     dotAffected = false
     i = 0
-    while i < funStr.length
+    while i < funStr.length - 1 # minus 1 to exclude the added space
         c = funStr[i]
         oldSlashQuoteReady = slashQuoteReady
         if quote == null

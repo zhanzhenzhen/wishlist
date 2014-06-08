@@ -292,14 +292,36 @@ if exports? and module?.exports?
 else
     Test = npmWishes.Test
 new Test("root"
+).set((v) ->
+    v.var1 = 111
+    v.var2 = 1234
 ).add("String.prototype test", (v) ->
     v.str = "hello world"
     v.wrongStr = "helloo world"
 , [
-    ' str.substr(4,1)="o" ',
-    ' str.split(" ")=["hello","world"] ',
-    ' str.split(" ")=["hello","world"] ',
-    ' wrongStr.substr(4,1)="o" ',
-    ' wrongStr.split(" ")=["hello","world"] ',
+    ' str.substr(4,1)="o" '
+    ' str.split(" ")=["hello","world"] '
+    ' str.split(" ")=["hello","world"] '
+    ' wrongStr.substr(4,1)="o" '
     ' wrongStr.split(" ")=["hello","world"] '
+    ' wrongStr.split(" ")=["hello","world"] '
+]).add((v) ->
+    v.a = v.var2
+, [
+    'Math.round(5.3)=5'
+    'var1=var2'
+    'var1<>var2'
+    'var2=a'
+    'var2<>a'
+]).add(->
+    undefined
+, [
+    '1+2+3=7'
+]).add((v) ->
+    v.obj = {}
+    v.obj.unit = ->
+        Math.random()
+    v.obj.unit()
+, [
+    '  (obj.unit>1)=true'
 ]).run()

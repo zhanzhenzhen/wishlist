@@ -70,7 +70,7 @@ class npmWishes.Test
             if not result? and not @async
                 result = {type: true}
             if result?
-                @finish(result)
+                @end(result)
         , 0)
         if showsMessage
             allTests = []
@@ -125,9 +125,11 @@ class npmWishes.Test
                     ) + "\n")
                     process.exit() if process?
             timer = setInterval(timerJob, 1000)
-            setTimeout(timerJob, 0)
+            # a delay slightly greater than 0 is useful for preventing a useless heartbeat
+            # while there's no async test and computation takes very little time.
+            setTimeout(timerJob, 10)
         @
-    finish: (result) ->
+    end: (result) ->
         @result = result ? {type: true}
         @getWishes().forEach((m) =>
             @checkWish(m)
