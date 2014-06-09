@@ -20,19 +20,44 @@ class npmWishes.Test
         @
     getWishes: ->
         @_wishes
-    add: (description, fun, wishes) ->
-        if typeof description == "object"
-            newChild = description
+    add: ->
+        newChild = null
+        if arguments[0] instanceof npmWishes.Test
+            newChild = arguments[0]
         else
-            if typeof description != "string"
-                wishes = fun
-                fun = description
-                description = ""
+            description = fun = wishes = options = null
+            if typeof arguments[0] == "string"
+                description = arguments[0]
+                fun = arguments[1]
+                if typeof arguments[2] == "object" and arguments[2] != null and
+                        not Array.isArray(arguments[2])
+                    options = arguments[2]
+                else
+                    wishes = arguments[2]
+                    options = arguments[3]
+            else
+                fun = arguments[0]
+                if typeof arguments[1] == "object" and arguments[1] != null and
+                        not Array.isArray(arguments[1])
+                    options = arguments[1]
+                else
+                    wishes = arguments[1]
+                    options = arguments[2]
+            description ?= ""
             wishes ?= []
+            options ?= {}
             newChild = new npmWishes.Test(description).set(fun).setWishes(wishes)
+            if options.async
+                newChild.async = true
         newChild.parent = @
         @_children.push(newChild)
         @
+    addAsync: () ->
+        args = []
+        for m in arguments
+            args.push(m)
+        args.push({async: true})
+        @add.apply(@, args)
     getChildren: ->
         # use a shallow copy to encapsule `_children` to prevent direct operation on the array
         @_children[..]

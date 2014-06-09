@@ -335,4 +335,33 @@ new Test("root"
     , [
         "false=true"
     ])
-).run()
+).add(
+    new Test("nested var"
+    ).add(->
+        undefined
+    , [
+        'var1=var2'
+    ]).add(->
+        undefined
+    , [
+        'var1<>var2'
+    ]).set((env) ->
+        env.var2 = 8888
+        env.var3 = env.var1 * 2
+    ).setWishes([
+        'var1 is var2'
+        'var1 isnt var2'
+        'var3=1'
+    ])
+).addAsync("simple test 2", (v, t) ->
+    setTimeout(->
+        v.slowVar = "yyy"
+        t.end()
+    , 2500)
+, [
+    "true=true"
+    "slowVar='yyy'"
+    "slowVar='iii'"
+    "slowVar='yyy'"
+    "var2=true"
+]).run()
