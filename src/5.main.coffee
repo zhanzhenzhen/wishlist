@@ -157,13 +157,13 @@ class npmWishes.Test
     end: (result) ->
         @result = result ? {type: true}
         @getWishes().forEach((m) =>
-            @checkWish(m)
+            @wish(m)
         )
         @getChildren().forEach((m) =>
             m.run(false)
         )
         @
-    checkWish: (wish) ->
+    wish: (wishStr) ->
         interpret = (s) =>
             npmWishes.parseExpression(s, Object.keys(@env)).forEach((m, index) =>
                 insertedString = "this.env."
@@ -171,7 +171,7 @@ class npmWishes.Test
                 s = s.substr(0, pos) + insertedString + s.substr(pos)
             )
             s
-        parsed = npmWishes.parseWish(wish)
+        parsed = npmWishes.parseWish(wishStr)
         args = parsed.components.map((m, index) =>
             if index == parsed.components.length - 1
                 m

@@ -364,4 +364,50 @@ new Test("root"
     "slowVar='iii'"
     "slowVar='yyy'"
     "var2=true"
-]).run()
+]).add(->
+    undefined
+, [
+    "(\"1\"===2)=true"
+]).add((v, t) ->
+    t.wish("{} is {}")
+    t.wish("    [] is []             ")
+    t.wish("NaN is NaN")
+    t.wish("NaN = NaN")
+    t.wish("null<>null")
+    t.wish("undefined<>undefined")
+    v.sampleNaN1 = NaN
+    v.sampleNaN2 = NaN
+    t.wish('sampleNaN1=sampleNaN2')
+    t.wish('sampleNaN1=1')
+    t.wish("NaN= 3")
+    t.wish("'' =NaN")
+    t.wish("0=0")
+    t.wish("0=-0")
+    t.wish("0 is -0")
+    t.wish("-0 is 0")
+    class v.CustomError extends Error
+        constructor: (msg) -> super(msg)
+    v.a = ->
+        throw new Error()
+    v.b = ->
+    v.c = ->
+        throw new v.CustomError()
+    t.wish('a throws')
+    t.wish('b throws')
+    t.wish('a throws /kkk/')
+    t.wish('a throws /^$/')
+    t.wish('a throws Error')
+    t.wish('a throws CustomError')
+    t.wish('c throws Error')
+    t.wish('c throws CustomError')
+    t.wish('b')
+    t.wish('a')
+    t.wish(' /=/.test("=")=true ')
+    t.wish(' /=/.test("=")=false ')
+    t.wish('Object .   is is Object.is')
+    t.wish('Object.is = Object. is')
+    t.wish(' "\\""="\\"abc" ')
+    t.wish(' 123<>123 ')
+    t.wish(' 123<>456 ')
+    t.wish(' {a:1,b:2}<>{a:1,b:1} ')
+).run()

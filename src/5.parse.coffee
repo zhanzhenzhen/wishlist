@@ -13,6 +13,7 @@ npmWishes.parseExpression = (expStr, envNames) ->
     slashQuoteReady = true
     wordStarted = false
     dotAffected = false
+    objectKeyReady = false
     i = 0
     while i < expStr.length - 1 # minus 1 to exclude the added space
         c = expStr[i]
@@ -38,6 +39,13 @@ npmWishes.parseExpression = (expStr, envNames) ->
             else if c == " " or c == "\t" or c == "\n" or c == "\r"
             else
                 dotAffected = false
+        oldObjectKeyReady = objectKeyReady
+        if quote == null
+            if c == "{" or c == ","
+                objectKeyReady = true
+            else if c == " " or c == "\t" or c == "\n" or c == "\r"
+            else
+                objectKeyReady = false
         if c == "\"" and quote == null
             quote = "double"
             i++
@@ -54,9 +62,12 @@ npmWishes.parseExpression = (expStr, envNames) ->
             i++
         else if c == "\\" and quote != null
             i += 2
-        else if quote == null and not oldWordStarted and not oldDotAffected and "a" <= c <= "z"
+        else if quote == null and not oldWordStarted and not oldDotAffected and (
+            "a" <= c <= "z" or "A" <= c <= "Z"
+        )
             s = expStr.substr(i, 31) # limit to 31 chars for better performance (max keyword length is 30)
-            if s.search(regex) != -1
+            if not (oldObjectKeyReady and s.search(/^([a-zA-Z0-9_$])+\s*:/) != -1) and
+                    s.search(regex) != -1
                 positions.push(i)
             i++
         else
