@@ -187,3 +187,70 @@ npmWishes.parseWish = (wishStr) ->
     parsed.components.push(JSON.stringify(wishStr))
     parsed.components = parsed.components.map((m) -> m.trim())
     parsed
+npmWishes.parseWishlist = (wishlistStr) ->
+    quote = null
+    parenthesis = 0
+    bracket = 0
+    brace = 0
+    slashQuoteReady = true
+    positions = []
+    i = 0
+    while i < wishlistStr.length
+        c = wishlistStr[i]
+        oldSlashQuoteReady = slashQuoteReady
+        if quote == null
+            if "a" <= c <= "z" or "A" <= c <= "Z" or "0" <= c <= "9" or
+                    c == "_" or c == "$" or c == ")" or c == "]"
+                slashQuoteReady = false
+            else if c == " " or c == "\t" or c == "\n" or c == "\r"
+            else
+                slashQuoteReady = true
+        if c == "\"" and quote == null
+            quote = "double"
+            i++
+        else if c == "'" and quote == null
+            quote = "single"
+            i++
+        else if c == "/" and quote == null and oldSlashQuoteReady
+            quote = "slash"
+            i++
+        else if (c == "\"" and quote == "double") or
+                (c == "'" and quote == "single") or
+                (c == "/" and quote == "slash")
+            quote = null
+            i++
+        else if c == "\\" and quote != null
+            i += 2
+        else if c == "("
+            parenthesis++
+            i++
+        else if c == "["
+            bracket++
+            i++
+        else if c == "{"
+            brace++
+            i++
+        else if c == ")"
+            parenthesis--
+            i++
+        else if c == "]"
+            bracket--
+            i++
+        else if c == "}"
+            brace--
+            i++
+        else if quote == null and parenthesis == bracket == brace == 0 and c == ";"
+            positions.push(i)
+            i++
+        else
+            i++
+    r = []
+    lastIndex = -1
+    positions.forEach((index) ->
+        s = wishlistStr.substring(lastIndex + 1, index).trim()
+        r.push(s) if s != ""
+        lastIndex = index
+    )
+    s = wishlistStr.substr(lastIndex + 1).trim()
+    r.push(s) if s != ""
+    r

@@ -307,13 +307,13 @@ new Test("root"
     ' wrongStr.split(" ")=["hello","world"] '
 ]).add((v) ->
     v.a = v.var2
-, [
-    'Math.round(5.3)=5'
-    'var1=var2'
-    'var1<>var2'
-    'var2=a'
-    'var2<>a'
-]).add(->
+, """
+    Math.round(5.3)=5;
+    var1=var2;
+    var1<>var2;
+    var2=a;
+    var2<>a;
+""").add(->
     undefined
 , [
     '1+2+3=7'
@@ -348,7 +348,7 @@ new Test("root"
     ]).set((env) ->
         env.var2 = 8888
         env.var3 = env.var1 * 2
-    ).setWishes([
+    ).setWishlist([
         'var1 is var2'
         'var1 isnt var2'
         'var3=1'
@@ -410,4 +410,38 @@ new Test("root"
     t.wish(' 123<>123 ')
     t.wish(' 123<>456 ')
     t.wish(' {a:1,b:2}<>{a:1,b:1} ')
+    t.wish(' {a:1,b:2}<>{a:1,b:2} ')
+    t.wish(' {a:1,b:2}<>{a:1,b:2,c:function(){}} ')
+    t.wish(' 8 isnt 4 ')
+    t.wish(' NaN isnt NaN ')
+    t.wish(' {} isnt {} ')
+    # circular ----------------------------------------[
+    t.wish(' {a:1,b:2}={a:1,b:2,c:function(){}} ')
+    t.wish(' {a:{a:{a:{a:{}}}}}={a:{a:{a:{a:{}}}}} ')
+    t.wish(' {a:{a:{a:{a:{}}}}}={a:{a:{a:{a:1}}}} ')
+    v.circularObj = {}
+    v.circularObj.a = v.circularObj
+    v.circularObj.b = [3, 4]
+    v.circularObj2 = {}
+    v.circularObj2.a = v.circularObj2
+    v.circularObj2.b = [3, 4]
+    t.wish(' circularObj isnt circularObj ')
+    t.wish(' circularObj is circularObj ')
+    t.wish(' circularObj = circularObj ')
+    t.wish(' circularObj <> circularObj ')
+    t.wish(' circularObj isnt circularObj2 ')
+    t.wish(' circularObj is circularObj2 ')
+    t.wish(' circularObj = circularObj2 ')
+    t.wish(' circularObj <> circularObj2 ')
+    v.circularWrapper = {}
+    v.circularWrapper.content = v.circularObj
+    v.circularWrapper.b = [5, 6]
+    v.circularWrapper2 = {}
+    v.circularWrapper2.content = v.circularObj
+    v.circularWrapper2.b = [5, 6]
+    t.wish(' circularWrapper isnt circularWrapper2 ')
+    t.wish(' circularWrapper is circularWrapper2 ')
+    t.wish(' circularWrapper = circularWrapper2 ')
+    t.wish(' circularWrapper <> circularWrapper2 ')
+    # ]----------------------------------------
 ).run()

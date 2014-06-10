@@ -2,7 +2,7 @@ class npmWishes.Test
     constructor: (@description = "") ->
         @_children = []
         @_fun = =>
-        @_wishes = []
+        @_wishlist = []
         @async = false
         @parent = null
         @_resetContext()
@@ -15,17 +15,26 @@ class npmWishes.Test
         @
     get: ->
         @_fun
-    setWishes: (wishes) ->
-        @_wishes = wishes
+    setWishlist: (wishlist) ->
+        @_wishlist = wishlist
         @
-    getWishes: ->
-        @_wishes
+    getWishlist: ->
+        @_wishlist
     add: ->
         newChild = null
         if arguments[0] instanceof npmWishes.Test
             newChild = arguments[0]
         else
-            description = fun = wishes = options = null
+            description = fun = wishlist = options = null
+            normalizeWishlist = (raw) =>
+                combined =
+                    if Array.isArray(raw)
+                        raw.join(";")
+                    else if typeof raw == "string"
+                        raw
+                    else
+                        ""
+                npmWishes.parseWishlist(combined)
             if typeof arguments[0] == "string"
                 description = arguments[0]
                 fun = arguments[1]
@@ -33,7 +42,7 @@ class npmWishes.Test
                         not Array.isArray(arguments[2])
                     options = arguments[2]
                 else
-                    wishes = arguments[2]
+                    wishlist = normalizeWishlist(arguments[2])
                     options = arguments[3]
             else
                 fun = arguments[0]
@@ -41,12 +50,12 @@ class npmWishes.Test
                         not Array.isArray(arguments[1])
                     options = arguments[1]
                 else
-                    wishes = arguments[1]
+                    wishlist = normalizeWishlist(arguments[1])
                     options = arguments[2]
             description ?= ""
-            wishes ?= []
+            wishlist ?= []
             options ?= {}
-            newChild = new npmWishes.Test(description).set(fun).setWishes(wishes)
+            newChild = new npmWishes.Test(description).set(fun).setWishlist(wishlist)
             if options.async
                 newChild.async = true
         newChild.parent = @
@@ -156,17 +165,21 @@ class npmWishes.Test
         @
     end: (result) ->
         @result = result ? {type: true}
-        @getWishes().forEach((m) =>
-            @wish(m)
+        @getWishlist().forEach((m) =>
+            @_checkWish(m)
         )
         @getChildren().forEach((m) =>
             m.run(false)
         )
         @
-    wish: (wishStr) ->
+    _checkWish: (wishStr) ->
+        # Because CoffeeScript cannot detect `this` keyword in `eval` string, implementing
+        # a `that` is better, although it's not necessary in this case because its `eval`
+        # is not in `=>`.
+        that = this
         interpret = (s) =>
             npmWishes.parseExpression(s, Object.keys(@env)).forEach((m, index) =>
-                insertedString = "this.env."
+                insertedString = "that.env."
                 pos = m + insertedString.length * index
                 s = s.substr(0, pos) + insertedString + s.substr(pos)
             )
@@ -178,7 +191,11 @@ class npmWishes.Test
             else
                 interpret(m)
         )
-        eval("this.#{parsed.type}(#{args.join(', ')})")
+        eval("that.#{parsed.type}(#{args.join(', ')})")
+    wish: (wishlistStr) ->
+        npmWishes.parseWishlist(wishlistStr).forEach((wishStr) =>
+            @_checkWish(wishStr)
+        )
     equal: (actual, ruler, description = "") ->
         objects = [] # This variable is to avoid circular object/array.
         determine = (actual, ruler) =>
