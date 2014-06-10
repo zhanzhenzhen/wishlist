@@ -83,28 +83,26 @@ class npmWishes.Test
             @env = npmWishes.objectClone(@parent.env)
         # We use `setTimeout(..., 0)` only to make all tests "unordered", at least theoretically.
         setTimeout(=>
-            result = null
             if exports? and module?.exports?
                 domain = require("domain").create()
                 domain.on("error", (error) =>
-                    result =
+                    @end(
                         type: false
                         errorMessage: """
                             Error Name: #{error.name}
                             Error Message: #{error.message}
                             Error Stack: #{error.stack}
                         """
+                    )
                 )
                 domain.run(=> @_fun(@env, @))
             else
                 try
                     @_fun(@env, @)
                 catch
-                    result = {type: false}
-            if not result? and not @async
-                result = {type: true}
-            if result?
-                @end(result)
+                    @end({type: false})
+            if not @result? and not @async
+                @end({type: true})
         , 0)
         if showsMessage
             allTests = []
@@ -164,13 +162,14 @@ class npmWishes.Test
             setTimeout(timerJob, 10)
         @
     end: (result) ->
-        @result = result ? {type: true}
-        @getWishlist().forEach((m) =>
-            @_checkWish(m)
-        )
-        @getChildren().forEach((m) =>
-            m.run(false)
-        )
+        if not @result?
+            @result = result ? {type: true}
+            @getWishlist().forEach((m) =>
+                @_checkWish(m)
+            )
+            @getChildren().forEach((m) =>
+                m.run(false)
+            )
         @
     _checkWish: (wishStr) ->
         # Because CoffeeScript cannot detect `this` keyword in `eval` string, implementing
@@ -191,7 +190,15 @@ class npmWishes.Test
             else
                 interpret(m)
         )
-        eval("that.#{parsed.type}(#{args.join(', ')})")
+        try
+            eval("that.#{parsed.type}(#{args.join(', ')})")
+        catch
+            newResult =
+                type: false
+                description: JSON.parse(args[args.length - 1])
+                actual: "unknown"
+                expected: "unknown"
+            @wishResults.push(newResult)
     wish: (wishlistStr) ->
         npmWishes.parseWishlist(wishlistStr).forEach((wishStr) =>
             @_checkWish(wishStr)

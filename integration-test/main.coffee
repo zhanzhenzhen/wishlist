@@ -1,261 +1,283 @@
 ###
 
-This is to test the "test". The output should look something like this:
+The output should look something like this:
 
-2014-06-01T18:45:48.237Z OK: 13, Exception: 0, Pending: 1
-2014-06-01T18:45:49.231Z OK: 13, Exception: 0, Pending: 1
-2014-06-01T18:45:50.232Z OK: 13, Exception: 0, Pending: 1
-2014-06-01T18:45:51.232Z OK: 14, Exception: 0, Pending: 0
+2014-06-10T18:05:33.579Z OK: 16, Exception: 1, Pending: 1
+2014-06-10T18:05:34.520Z OK: 16, Exception: 1, Pending: 1
+2014-06-10T18:05:35.522Z OK: 16, Exception: 1, Pending: 1
+2014-06-10T18:05:36.524Z OK: 17, Exception: 1, Pending: 0
 
-********** Failed Unit **********
+********** Exceptional Test **********
+Test: 
+Function: function () {
+    return falseFunction(true);
+  }
+Error Name: ReferenceError
+Error Message: falseFunction is not defined
+Error Stack: ...
+
+
+********** Failed Wish **********
     Test: root --> String.prototype test
-    Unit: wrongStr.split(" ")=["hello","world"]
+    Wish: wrongStr.split(" ")=["hello","world"]
 Expected: = ["hello","world"]
   Actual: ["helloo","world"]
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> String.prototype test
-    Unit: wrongStr.split(" ")=["hello","world"]
+    Wish: wrongStr.split(" ")=["hello","world"]
 Expected: = ["hello","world"]
   Actual: ["helloo","world"]
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: var1=var2
+    Wish: var1 equals var2
 Expected: = 1234
   Actual: 111
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: var2<>a
+    Wish:  var2 <><><> a
 Expected: ≠ 1234
   Actual: 1234
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: 1+2+3=7
+    Wish: 1+2+3=7
 Expected: = 7
   Actual: 6
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: (obj.unit>1)=true
+    Wish: (obj.unit>1)=true
 Expected: = true
   Actual: false
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> nested test --> test 2 in nested test
-    Unit: simple boolean test
+    Wish:  simple boolean test
 Expected: = true
   Actual: false
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> nested var
-    Unit: var1 is var2
+    Wish: var1 is var2
 Expected: is 8888
   Actual: 111
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> nested var
-    Unit: var3=1
+    Wish: var3=1
 Expected: = 1
   Actual: 222
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> nested var --> 
-    Unit: var1=var2
+    Wish: var1=var2
 Expected: = 8888
   Actual: 111
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> simple test 2
-    Unit: var2=true
+    Wish: slowVar='iii'
+Expected: = "iii"
+  Actual: "yyy"
+
+********** Failed Wish **********
+    Test: root --> simple test 2
+    Wish: var2=true
 Expected: = true
   Actual: 1234
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: ("1"===2)=true
+    Wish: ("1"===2)=true
 Expected: = true
   Actual: false
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: {} is {}
+    Wish: inexistentVariable=inexistentVariable
+Expected: unknown
+  Actual: unknown
+
+********** Failed Wish **********
+    Test: root --> 
+    Wish: {} is {}
 Expected: is {}
   Actual: {}
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: [] is []
+    Wish: [] is []
 Expected: is []
   Actual: []
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: null<>null
+    Wish: null<>null
 Expected: ≠ null
   Actual: null
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: undefined<>undefined
+    Wish: undefined<>undefined
 Expected: ≠ undefined
   Actual: undefined
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: sampleNaN1=1
+    Wish: sampleNaN1=1
 Expected: = 1
   Actual: NaN
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: NaN= 3
+    Wish: NaN= 3
 Expected: = 3
   Actual: NaN
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: '' =NaN
+    Wish: '' =NaN
 Expected: = NaN
   Actual: ""
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: 0=-0
+    Wish: 0=-0
 Expected: = -0
   Actual: 0
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: 0 is -0
+    Wish: 0 is -0
 Expected: is -0
   Actual: 0
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: -0 is 0
+    Wish: -0 is 0
 Expected: is 0
   Actual: -0
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: b throws
+    Wish: b throws
 Expected: exception
   Actual: no exception
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: a throws /kkk/
+    Wish: a throws /kkk/
 Expected: an exception
   Actual: another exception
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: a throws CustomError
+    Wish: a throws CustomError
 Expected: an exception
   Actual: another exception
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: a
+    Wish: a
 Expected: no exception
   Actual: exception
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: /=/.test("=")=false
+    Wish: /=/.test("=")=false
 Expected: = false
   Actual: true
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: "\""="\"abc"
+    Wish: "\""="\"abc"
 Expected: = "\"abc"
   Actual: "\""
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: 123<>123
+    Wish: 123<>123
 Expected: ≠ 123
   Actual: 123
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: {a:1,b:2}<>{a:1,b:2}
+    Wish: {a:1,b:2}<>{a:1,b:2}
 Expected: ≠ {"a":1,"b":2}
   Actual: {"a":1,"b":2}
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: NaN isnt NaN
+    Wish: NaN isnt NaN
 Expected: isn't NaN
   Actual: NaN
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: {a:1,b:2}={a:1,b:2,c:function(){}}
+    Wish: {a:1,b:2}={a:1,b:2,c:function(){}}
 Expected: = {"a":1,"b":2,"c":[Function]}
   Actual: {"a":1,"b":2}
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: {a:{a:{a:{a:{}}}}}={a:{a:{a:{a:1}}}}
+    Wish: {a:{a:{a:{a:{}}}}}={a:{a:{a:{a:1}}}}
 Expected: = {"a":{"a":{"a":[Object]}}}
   Actual: {"a":{"a":{"a":[Object]}}}
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: circularObj isnt circularObj
+    Wish: circularObj isnt circularObj
 Expected: isn't {"a":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[3,4]}
   Actual: {"a":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[3,4]}
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: circularObj <> circularObj
+    Wish: circularObj <> circularObj
 Expected: ≠ {"a":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[3,4]}
   Actual: {"a":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[3,4]}
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: circularObj is circularObj2
+    Wish: circularObj is circularObj2
 Expected: is {"a":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[3,4]}
   Actual: {"a":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[3,4]}
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: circularObj = circularObj2
+    Wish: circularObj = circularObj2
 Expected: = {"a":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[3,4]}
   Actual: {"a":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[3,4]}
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: circularWrapper is circularWrapper2
+    Wish: circularWrapper is circularWrapper2
 Expected: is {"content":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[5,6]}
   Actual: {"content":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[5,6]}
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: circularWrapper <> circularWrapper2
+    Wish: circularWrapper <> circularWrapper2
 Expected: ≠ {"content":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[5,6]}
   Actual: {"content":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[5,6]}
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: veryLongCircularObj1=veryLongCircularObj2
+    Wish: veryLongCircularObj1=veryLongCircularObj2
 Expected: = {"me":[Object],"secondMe":[Object],"thirdMe":[Object],"meArray":[Array],"a":"............................................................","b":"............................................................","c":"............................................................","d":"............................................................","e":"............................................................","f":"............................................................","g":"............................................................","h":"............................................................","i":"............................................................","j":"............................................................","k":"............................................................","l":"............................................................"}
   Actual: {"me":[Object],"secondMe":[Object],"thirdMe":[Object],"meArray":[Array],"a":"............................................................","b":"............................................................","c":"............................................................","d":"............................................................","e":"............................................................","f":"............................................................","g":"............................................................","h":"............................................................","i":"............................................................","j":"............................................................","k":"............................................................","l":"............................................................"}
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: veryLongCircularObj1 is veryLongCircularObj2
+    Wish: veryLongCircularObj1 is veryLongCircularObj2
 Expected: is {"me":[Object],"secondMe":[Object],"thirdMe":[Object],"meArray":[Array],"a":"............................................................","b":"............................................................","c":"............................................................","d":"............................................................","e":"............................................................","f":"............................................................","g":"............................................................","h":"............................................................","i":"............................................................","j":"............................................................","k":"............................................................","l":"............................................................"}
   Actual: {"me":[Object],"secondMe":[Object],"thirdMe":[Object],"meArray":[Array],"a":"............................................................","b":"............................................................","c":"............................................................","d":"............................................................","e":"............................................................","f":"............................................................","g":"............................................................","h":"............................................................","i":"............................................................","j":"............................................................","k":"............................................................","l":"............................................................"}
 
-********** Failed Unit **********
+********** Failed Wish **********
     Test: root --> 
-    Unit: [
+    Wish: [
     1, 2, 3,
     "asdf", "jkl",
     {
@@ -283,7 +305,7 @@ Expected: is {"me":[Object],"secondMe":[Object],"thirdMe":[Object],"meArray":[Ar
 Expected: = [1,2,3,"asdf","jkl",{"yyy":4,"iii":5,"jjj":NaN,"kkk":null,"mmm e":-10,"d":undefined}]
   Actual: [1,2,3,"asdf","jkl",{"yyy":4,"iii":5,"jjj":NaN,"kkk":null,"mmm e":-9,"d":undefined}]
 
-0 Exceptional Tests, 42 Failed Units, Mark: 9f39f
+1 Exceptional Tests, 44 Failed Wishes, Mark: 6a99f
 
 ###
 
@@ -370,7 +392,13 @@ new Test("root"
     undefined
 , [
     "(\"1\"===2)=true"
-]).add((v, t) ->
+]).add(->
+    undefined
+, "inexistentVariable=inexistentVariable"
+).add(->
+    falseFunction(true)
+, "true=true"
+).add((v, t) ->
     t.wish("{} is {}")
     t.wish("    [] is []             ")
     t.wish("NaN is NaN")
