@@ -336,6 +336,42 @@ class npmWishes.Test
             newResult.expected = "no exception"
         @wishResults.push(newResult)
         @
+    lessThan: (actual, ruler, description = "") ->
+        newResult =
+            type: actual < ruler
+            description: description
+        if newResult.type == false
+            newResult.actual = npmWishes.valueToMessage(actual)
+            newResult.expected = "< " + npmWishes.valueToMessage(ruler)
+        @wishResults.push(newResult)
+        @
+    lessThanOrEqual: (actual, ruler, description = "") ->
+        newResult =
+            type: actual <= ruler
+            description: description
+        if newResult.type == false
+            newResult.actual = npmWishes.valueToMessage(actual)
+            newResult.expected = "<= " + npmWishes.valueToMessage(ruler)
+        @wishResults.push(newResult)
+        @
+    greaterThan: (actual, ruler, description = "") ->
+        newResult =
+            type: actual > ruler
+            description: description
+        if newResult.type == false
+            newResult.actual = npmWishes.valueToMessage(actual)
+            newResult.expected = "> " + npmWishes.valueToMessage(ruler)
+        @wishResults.push(newResult)
+        @
+    greaterThanOrEqual: (actual, ruler, description = "") ->
+        newResult =
+            type: actual >= ruler
+            description: description
+        if newResult.type == false
+            newResult.actual = npmWishes.valueToMessage(actual)
+            newResult.expected = ">= " + npmWishes.valueToMessage(ruler)
+        @wishResults.push(newResult)
+        @
 # This function is equivalent to ECMAScript 6th's `Object.is`.
 npmWishes.objectIs = (a, b) ->
     if typeof a == "number" and typeof b == "number"

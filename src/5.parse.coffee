@@ -184,6 +184,41 @@ npmWishes.parseWish = (wishStr) ->
                                 if match[1]? then match[1] else "undefined"
                             ]
                         break
+                    # "<=" and ">=" must precede the other two because the other two patterns
+                    # also match "<=" and ">=". ====================[
+                    else if (match = s.match(/// ^ <= ([^]+) $ ///))?
+                        parsed =
+                            type: "lessThanOrEqual"
+                            components: [
+                                wishStr.substr(0, i)
+                                match[1]
+                            ]
+                        break
+                    else if (match = s.match(/// ^ >= ([^]+) $ ///))?
+                        parsed =
+                            type: "greaterThanOrEqual"
+                            components: [
+                                wishStr.substr(0, i)
+                                match[1]
+                            ]
+                        break
+                    else if (match = s.match(/// ^ < ([^]+) $ ///))?
+                        parsed =
+                            type: "lessThan"
+                            components: [
+                                wishStr.substr(0, i)
+                                match[1]
+                            ]
+                        break
+                    else if (match = s.match(/// ^ > ([^]+) $ ///))?
+                        parsed =
+                            type: "greaterThan"
+                            components: [
+                                wishStr.substr(0, i)
+                                match[1]
+                            ]
+                        break
+                    # ]====================
                 i++
             else
                 i++

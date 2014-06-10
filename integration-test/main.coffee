@@ -2,10 +2,10 @@
 
 The output should look something like this:
 
-2014-06-10T18:05:33.579Z OK: 16, Exception: 1, Pending: 1
-2014-06-10T18:05:34.520Z OK: 16, Exception: 1, Pending: 1
-2014-06-10T18:05:35.522Z OK: 16, Exception: 1, Pending: 1
-2014-06-10T18:05:36.524Z OK: 17, Exception: 1, Pending: 0
+2014-06-10T19:23:27.405Z OK: 16, Exception: 1, Pending: 1
+2014-06-10T19:23:28.344Z OK: 16, Exception: 1, Pending: 1
+2014-06-10T19:23:29.347Z OK: 16, Exception: 1, Pending: 1
+2014-06-10T19:23:30.348Z OK: 17, Exception: 1, Pending: 0
 
 ********** Exceptional Test **********
 Test: 
@@ -187,6 +187,42 @@ Expected: no exception
 
 ********** Failed Wish **********
     Test: root --> 
+    Wish: var2<1000
+Expected: < 1000
+  Actual: 1234
+
+********** Failed Wish **********
+    Test: root --> 
+    Wish: var2<1234
+Expected: < 1234
+  Actual: 1234
+
+********** Failed Wish **********
+    Test: root --> 
+    Wish: var2<=1000
+Expected: <= 1000
+  Actual: 1234
+
+********** Failed Wish **********
+    Test: root --> 
+    Wish: var2 >2000
+Expected: > 2000
+  Actual: 1234
+
+********** Failed Wish **********
+    Test: root --> 
+    Wish: var2 >= 2000
+Expected: >= 2000
+  Actual: 1234
+
+********** Failed Wish **********
+    Test: root --> 
+    Wish: "a">"b"
+Expected: > "b"
+  Actual: "a"
+
+********** Failed Wish **********
+    Test: root --> 
     Wish: /=/.test("=")=false
 Expected: = false
   Actual: true
@@ -305,7 +341,7 @@ Expected: is {"me":[Object],"secondMe":[Object],"thirdMe":[Object],"meArray":[Ar
 Expected: = [1,2,3,"asdf","jkl",{"yyy":4,"iii":5,"jjj":NaN,"kkk":null,"mmm e":-10,"d":undefined}]
   Actual: [1,2,3,"asdf","jkl",{"yyy":4,"iii":5,"jjj":NaN,"kkk":null,"mmm e":-9,"d":undefined}]
 
-1 Exceptional Tests, 44 Failed Wishes, Mark: 6a99f
+1 Exceptional Tests, 50 Failed Wishes, Mark: dfb8b
 
 ###
 
@@ -432,6 +468,19 @@ new Test("root"
     t.wish('c throws CustomError')
     t.wish('b')
     t.wish('a')
+    t.wish('var2<1000')
+    t.wish('var2< 2000')
+    t.wish('var2<1234')
+    t.wish('var2 <=   1234')
+    t.wish('var2<=2000')
+    t.wish('var2<=1000')
+    t.wish('var2>1000')
+    t.wish('var2 >2000')
+    t.wish('var2 >= 2000')
+    t.wish('var2 >= 1234')
+    t.wish('var2>=1000')
+    t.wish(' "a"<"b" ')
+    t.wish(' "a">"b" ')
     t.wish(' /=/.test("=")=true ')
     t.wish(' /=/.test("=")=false ')
     t.wish('Object .   is is Object.is')
