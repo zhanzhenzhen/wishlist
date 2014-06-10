@@ -76,115 +76,125 @@ npmWishes.parseExpression = (expStr, envNames) ->
 # `wishStr` must be an already-trimmed string
 npmWishes.parseWish = (wishStr) ->
     parsed = null
-    quote = null
-    parenthesis = 0
-    bracket = 0
-    brace = 0
-    slashQuoteReady = true
-    dotAffected = false
-    i = 0
-    while i < wishStr.length
-        c = wishStr[i]
-        oldSlashQuoteReady = slashQuoteReady
-        if quote == null
-            if "a" <= c <= "z" or "A" <= c <= "Z" or "0" <= c <= "9" or
-                    c == "_" or c == "$" or c == ")" or c == "]"
-                slashQuoteReady = false
-            else if c == " " or c == "\t" or c == "\n" or c == "\r"
+    description = null
+    [0, 1].forEach((round) ->
+        quote = null
+        parenthesis = 0
+        bracket = 0
+        brace = 0
+        slashQuoteReady = true
+        dotAffected = false
+        i = 0
+        while i < wishStr.length
+            c = wishStr[i]
+            oldSlashQuoteReady = slashQuoteReady
+            if quote == null
+                if "a" <= c <= "z" or "A" <= c <= "Z" or "0" <= c <= "9" or
+                        c == "_" or c == "$" or c == ")" or c == "]"
+                    slashQuoteReady = false
+                else if c == " " or c == "\t" or c == "\n" or c == "\r"
+                else
+                    slashQuoteReady = true
+            oldDotAffected = dotAffected
+            if quote == null
+                if c == "."
+                    dotAffected = true
+                else if c == " " or c == "\t" or c == "\n" or c == "\r"
+                else
+                    dotAffected = false
+            if c == "\"" and quote == null
+                quote = "double"
+                i++
+            else if c == "'" and quote == null
+                quote = "single"
+                i++
+            else if c == "/" and quote == null and oldSlashQuoteReady
+                quote = "slash"
+                i++
+            else if (c == "\"" and quote == "double") or
+                    (c == "'" and quote == "single") or
+                    (c == "/" and quote == "slash")
+                quote = null
+                i++
+            else if c == "\\" and quote != null
+                i += 2
+            else if c == "("
+                parenthesis++
+                i++
+            else if c == "["
+                bracket++
+                i++
+            else if c == "{"
+                brace++
+                i++
+            else if c == ")"
+                parenthesis--
+                i++
+            else if c == "]"
+                bracket--
+                i++
+            else if c == "}"
+                brace--
+                i++
+            else if quote == null and not oldDotAffected and parenthesis == bracket == brace == 0
+                if round == 0
+                    if c == ":"
+                        description = wishStr.substr(i + 1)
+                        wishStr = wishStr.substr(0, i)
+                        break
+                else if round == 1
+                    s = wishStr.substr(i)
+                    if (match = s.match(/// ^ = ([^]+) $ ///))?
+                        parsed =
+                            type: "equal"
+                            components: [
+                                wishStr.substr(0, i)
+                                match[1]
+                            ]
+                        break
+                    else if (match = s.match(/// ^ <> ([^]+) $ ///))?
+                        parsed =
+                            type: "notEqual"
+                            components: [
+                                wishStr.substr(0, i)
+                                match[1]
+                            ]
+                        break
+                    else if (match = s.match(/// ^ \s is \s ([^]+) $ ///))?
+                        parsed =
+                            type: "is"
+                            components: [
+                                wishStr.substr(0, i)
+                                match[1]
+                            ]
+                        break
+                    else if (match = s.match(/// ^ \s isnt \s ([^]+) $ ///))?
+                        parsed =
+                            type: "isnt"
+                            components: [
+                                wishStr.substr(0, i)
+                                match[1]
+                            ]
+                        break
+                    else if (match = s.match(///^ \s throws (?: \s ([^]+))? $ ///))?
+                        parsed =
+                            type: "throws"
+                            components: [
+                                wishStr.substr(0, i)
+                                if match[1]? then match[1] else "undefined"
+                            ]
+                        break
+                i++
             else
-                slashQuoteReady = true
-        oldDotAffected = dotAffected
-        if quote == null
-            if c == "."
-                dotAffected = true
-            else if c == " " or c == "\t" or c == "\n" or c == "\r"
-            else
-                dotAffected = false
-        if c == "\"" and quote == null
-            quote = "double"
-            i++
-        else if c == "'" and quote == null
-            quote = "single"
-            i++
-        else if c == "/" and quote == null and oldSlashQuoteReady
-            quote = "slash"
-            i++
-        else if (c == "\"" and quote == "double") or
-                (c == "'" and quote == "single") or
-                (c == "/" and quote == "slash")
-            quote = null
-            i++
-        else if c == "\\" and quote != null
-            i += 2
-        else if c == "("
-            parenthesis++
-            i++
-        else if c == "["
-            bracket++
-            i++
-        else if c == "{"
-            brace++
-            i++
-        else if c == ")"
-            parenthesis--
-            i++
-        else if c == "]"
-            bracket--
-            i++
-        else if c == "}"
-            brace--
-            i++
-        else if quote == null and not oldDotAffected and parenthesis == bracket == brace == 0
-            s = wishStr.substr(i)
-            if (match = s.match(/// ^ = ([^]+) $ ///))?
-                parsed =
-                    type: "equal"
-                    components: [
-                        wishStr.substr(0, i)
-                        match[1]
-                    ]
-                break
-            else if (match = s.match(/// ^ <> ([^]+) $ ///))?
-                parsed =
-                    type: "notEqual"
-                    components: [
-                        wishStr.substr(0, i)
-                        match[1]
-                    ]
-                break
-            else if (match = s.match(/// ^ \s is \s ([^]+) $ ///))?
-                parsed =
-                    type: "is"
-                    components: [
-                        wishStr.substr(0, i)
-                        match[1]
-                    ]
-                break
-            else if (match = s.match(/// ^ \s isnt \s ([^]+) $ ///))?
-                parsed =
-                    type: "isnt"
-                    components: [
-                        wishStr.substr(0, i)
-                        match[1]
-                    ]
-                break
-            else if (match = s.match(///^ \s throws (?: \s ([^]+))? $ ///))?
-                parsed =
-                    type: "throws"
-                    components: [
-                        wishStr.substr(0, i)
-                        if match[1]? then match[1] else "undefined"
-                    ]
-                break
-            i++
-        else
-            i++
-    parsed ?=
-        type: "doesNotThrow"
-        components: [
-            wishStr
-        ]
-    parsed.components.push(JSON.stringify(wishStr))
+                i++
+        if round == 1
+            parsed ?=
+                type: "doesNotThrow"
+                components: [
+                    wishStr
+                ]
+    )
+    parsed.components.push(JSON.stringify(description ? wishStr))
     parsed.components = parsed.components.map((m) -> m.trim())
     parsed
 npmWishes.parseWishlist = (wishlistStr) ->

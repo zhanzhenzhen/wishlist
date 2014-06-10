@@ -309,10 +309,12 @@ new Test("root"
     v.a = v.var2
 , """
     Math.round(5.3)=5;
-    var1=var2;
+    var1=var2:var1 equals var2;
     var1<>var2;
-    var2=a;
-    var2<>a;
+    var2=a : var1=========a;
+    var2<>a
+        : var2 <><><> a
+    ;
 """).add(->
     undefined
 , [
@@ -333,7 +335,7 @@ new Test("root"
     ]).add("test 2 in nested test", ->
         undefined
     , [
-        "false=true"
+        "false=true: simple boolean test"
     ])
 ).add(
     new Test("nested var"
@@ -359,7 +361,7 @@ new Test("root"
         t.end()
     , 2500)
 , [
-    "true=true"
+    "true=true :truthy unit"
     "slowVar='yyy'"
     "slowVar='iii'"
     "slowVar='yyy'"
