@@ -444,4 +444,98 @@ new Test("root"
     t.wish(' circularWrapper = circularWrapper2 ')
     t.wish(' circularWrapper <> circularWrapper2 ')
     # ]----------------------------------------
+).add((v, t) ->
+    v.veryLongCircularObj1 = {}
+    v.veryLongCircularObj1.me = v.veryLongCircularObj1
+    v.veryLongCircularObj1.secondMe = v.veryLongCircularObj1
+    v.veryLongCircularObj1.thirdMe = v.veryLongCircularObj1
+    v.veryLongCircularObj1.meArray = [v.veryLongCircularObj1, v.veryLongCircularObj1]
+    v.veryLongCircularObj1.a = "............................................................"
+    v.veryLongCircularObj1.b = "............................................................"
+    v.veryLongCircularObj1.c = "............................................................"
+    v.veryLongCircularObj1.d = "............................................................"
+    v.veryLongCircularObj1.e = "............................................................"
+    v.veryLongCircularObj1.f = "............................................................"
+    v.veryLongCircularObj1.g = "............................................................"
+    v.veryLongCircularObj1.h = "............................................................"
+    v.veryLongCircularObj1.i = "............................................................"
+    v.veryLongCircularObj1.j = "............................................................"
+    v.veryLongCircularObj1.k = "............................................................"
+    v.veryLongCircularObj1.l = "............................................................"
+    v.veryLongCircularObj2 = {}
+    v.veryLongCircularObj2.me = v.veryLongCircularObj2
+    v.veryLongCircularObj2.secondMe = v.veryLongCircularObj2
+    v.veryLongCircularObj2.thirdMe = v.veryLongCircularObj2
+    v.veryLongCircularObj2.meArray = [v.veryLongCircularObj2, v.veryLongCircularObj2]
+    v.veryLongCircularObj2.a = "............................................................"
+    v.veryLongCircularObj2.b = "............................................................"
+    v.veryLongCircularObj2.c = "............................................................"
+    v.veryLongCircularObj2.d = "............................................................"
+    v.veryLongCircularObj2.e = "............................................................"
+    v.veryLongCircularObj2.f = "............................................................"
+    v.veryLongCircularObj2.g = "............................................................"
+    v.veryLongCircularObj2.h = "............................................................"
+    v.veryLongCircularObj2.i = "............................................................"
+    v.veryLongCircularObj2.j = "............................................................"
+    v.veryLongCircularObj2.k = "............................................................"
+    v.veryLongCircularObj2.l = "............................................................"
+    t.wish('veryLongCircularObj1=veryLongCircularObj2')
+    t.wish('veryLongCircularObj1<>veryLongCircularObj2')
+    t.wish('veryLongCircularObj1 is veryLongCircularObj2')
+    t.wish('veryLongCircularObj1 isnt veryLongCircularObj2')
+).add((v, t) ->
+    t.wish("""
+        [
+            1, 2, 3,
+            "asdf", "jkl",
+            {
+                yyy: 4,
+                iii: 5,
+                jjj: NaN,
+                kkk: null,
+                "mmm e": -9,
+                d: undefined
+            }
+        ]
+        =
+        [
+            1, 2, 3,
+            "asdf", "jkl",
+            {
+                yyy: 4,
+                iii: 5,
+                jjj: NaN,
+                kkk: null,
+                "mmm e": -10,
+                d: undefined
+            }
+        ]
+    """)
+    t.wish("""
+        [
+            1, 2, 3,
+            "asdf", "jkl",
+            {
+                yyy: 4,
+                iii: 5,
+                jjj: NaN,
+                kkk: null,
+                "mmm e": -9,
+                d: undefined
+            }
+        ]
+        =
+        [
+            1, 2, 3,
+            "asdf", "jkl",
+            {
+                yyy: 4,
+                iii: 5,
+                jjj: NaN,
+                kkk: null,
+                "mmm e": -9,
+                d: undefined
+            }
+        ]
+    """)
 ).run()
