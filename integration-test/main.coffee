@@ -2,10 +2,10 @@
 
 The output should look something like this:
 
-2014-06-11T07:23:57.358Z OK: 16, Exception: 1, Pending: 1
-2014-06-11T07:23:58.298Z OK: 16, Exception: 1, Pending: 1
-2014-06-11T07:23:59.300Z OK: 16, Exception: 1, Pending: 1
-2014-06-11T07:24:00.302Z OK: 17, Exception: 1, Pending: 0
+2014-06-11T08:33:22.145Z OK: 16, Exception: 1, Pending: 1
+2014-06-11T08:33:23.087Z OK: 16, Exception: 1, Pending: 1
+2014-06-11T08:33:24.089Z OK: 16, Exception: 1, Pending: 1
+2014-06-11T08:33:25.091Z OK: 17, Exception: 1, Pending: 0
 
 ********** Exceptional Test **********
 Test: 
@@ -341,7 +341,7 @@ Expected: is {"me":[Object],"secondMe":[Object],"thirdMe":[Object],"meArray":[Ar
 Expected: = [1,2,3,"asdf","jkl",{"yyy":4,"iii":5,"jjj":NaN,"kkk":null,"mmm e":-10,"d":undefined}]
   Actual: [1,2,3,"asdf","jkl",{"yyy":4,"iii":5,"jjj":NaN,"kkk":null,"mmm e":-9,"d":undefined}]
 
-1 Exceptional Tests, 50 Broken Wishes, Mark: dfb8b
+1 tests of 18 exceptional. 50 wishes of 99 broken. Mark: dfb8b
 
 ###
 

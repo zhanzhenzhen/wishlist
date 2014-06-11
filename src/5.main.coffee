@@ -131,6 +131,7 @@ class npmWishes.Test
                         console.log(m.result.errorMessage) if m.result.errorMessage?
                     )
                     failureCount = 0
+                    successCount = 0
                     markString = ""
                     allTests.forEach((m) => m.wishResults.forEach((n) =>
                         markString += " " + n.type.toString()
@@ -144,16 +145,25 @@ class npmWishes.Test
                             console.log("    Wish: #{n.description}")
                             console.log("Expected: #{n.expected}")
                             console.log("  Actual: #{n.actual}")
+                        else
+                            successCount++
                     ))
                     markString = markString.trim()
                     mark = npmWishes.sha256(markString).substr(0, 5)
                     console.log("\n" + (
-                        if exceptionTests.length == 0 and failureCount == 0
-                            "All tests are OK. All wishes succeeded."
-                        else
-                            "#{exceptionTests.length} Exceptional Tests, " +
-                            "#{failureCount} Broken Wishes, " +
-                            "Mark: #{mark}"
+                        (
+                            if exceptionTests.length == 0
+                                "Tests OK."
+                            else
+                                "#{exceptionTests.length} tests of #{allTests.length} exceptional."
+                        ) + " " +
+                        (
+                            if failureCount == 0
+                                "Wishes fulfilled."
+                            else
+                                "#{failureCount} wishes of #{failureCount + successCount} broken."
+                        ) + " " +
+                        "Mark: #{mark}"
                     ) + "\n")
                     process.exit() if process?
             timer = setInterval(timerJob, 1000)
