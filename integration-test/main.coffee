@@ -2,10 +2,10 @@
 
 The output should look something like this:
 
-2014-06-10T19:23:27.405Z OK: 16, Exception: 1, Pending: 1
-2014-06-10T19:23:28.344Z OK: 16, Exception: 1, Pending: 1
-2014-06-10T19:23:29.347Z OK: 16, Exception: 1, Pending: 1
-2014-06-10T19:23:30.348Z OK: 17, Exception: 1, Pending: 0
+2014-06-11T07:23:57.358Z OK: 16, Exception: 1, Pending: 1
+2014-06-11T07:23:58.298Z OK: 16, Exception: 1, Pending: 1
+2014-06-11T07:23:59.300Z OK: 16, Exception: 1, Pending: 1
+2014-06-11T07:24:00.302Z OK: 17, Exception: 1, Pending: 0
 
 ********** Exceptional Test **********
 Test: 
@@ -17,301 +17,301 @@ Error Message: falseFunction is not defined
 Error Stack: ...
 
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> String.prototype test
     Wish: wrongStr.split(" ")=["hello","world"]
 Expected: = ["hello","world"]
   Actual: ["helloo","world"]
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> String.prototype test
     Wish: wrongStr.split(" ")=["hello","world"]
 Expected: = ["hello","world"]
   Actual: ["helloo","world"]
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: var1 equals var2
 Expected: = 1234
   Actual: 111
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish:  var2 <><><> a
 Expected: ≠ 1234
   Actual: 1234
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: 1+2+3=7
 Expected: = 7
   Actual: 6
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: (obj.unit>1)=true
 Expected: = true
   Actual: false
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> nested test --> test 2 in nested test
     Wish:  simple boolean test
 Expected: = true
   Actual: false
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> nested var
     Wish: var1 is var2
 Expected: is 8888
   Actual: 111
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> nested var
     Wish: var3=1
 Expected: = 1
   Actual: 222
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> nested var --> 
     Wish: var1=var2
 Expected: = 8888
   Actual: 111
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> simple test 2
     Wish: slowVar='iii'
 Expected: = "iii"
   Actual: "yyy"
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> simple test 2
     Wish: var2=true
 Expected: = true
   Actual: 1234
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: ("1"===2)=true
 Expected: = true
   Actual: false
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: inexistentVariable=inexistentVariable
 Expected: unknown
   Actual: unknown
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: {} is {}
 Expected: is {}
   Actual: {}
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: [] is []
 Expected: is []
   Actual: []
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: null<>null
 Expected: ≠ null
   Actual: null
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: undefined<>undefined
 Expected: ≠ undefined
   Actual: undefined
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: sampleNaN1=1
 Expected: = 1
   Actual: NaN
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: NaN= 3
 Expected: = 3
   Actual: NaN
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: '' =NaN
 Expected: = NaN
   Actual: ""
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: 0=-0
 Expected: = -0
   Actual: 0
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: 0 is -0
 Expected: is -0
   Actual: 0
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: -0 is 0
 Expected: is 0
   Actual: -0
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: b throws
 Expected: exception
   Actual: no exception
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: a throws /kkk/
 Expected: an exception
   Actual: another exception
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: a throws CustomError
 Expected: an exception
   Actual: another exception
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: a
 Expected: no exception
   Actual: exception
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: var2<1000
 Expected: < 1000
   Actual: 1234
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: var2<1234
 Expected: < 1234
   Actual: 1234
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: var2<=1000
 Expected: <= 1000
   Actual: 1234
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: var2 >2000
 Expected: > 2000
   Actual: 1234
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: var2 >= 2000
 Expected: >= 2000
   Actual: 1234
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: "a">"b"
 Expected: > "b"
   Actual: "a"
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: /=/.test("=")=false
 Expected: = false
   Actual: true
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: "\""="\"abc"
 Expected: = "\"abc"
   Actual: "\""
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: 123<>123
 Expected: ≠ 123
   Actual: 123
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: {a:1,b:2}<>{a:1,b:2}
 Expected: ≠ {"a":1,"b":2}
   Actual: {"a":1,"b":2}
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: NaN isnt NaN
 Expected: isn't NaN
   Actual: NaN
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: {a:1,b:2}={a:1,b:2,c:function(){}}
 Expected: = {"a":1,"b":2,"c":[Function]}
   Actual: {"a":1,"b":2}
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: {a:{a:{a:{a:{}}}}}={a:{a:{a:{a:1}}}}
 Expected: = {"a":{"a":{"a":[Object]}}}
   Actual: {"a":{"a":{"a":[Object]}}}
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: circularObj isnt circularObj
 Expected: isn't {"a":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[3,4]}
   Actual: {"a":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[3,4]}
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: circularObj <> circularObj
 Expected: ≠ {"a":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[3,4]}
   Actual: {"a":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[3,4]}
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: circularObj is circularObj2
 Expected: is {"a":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[3,4]}
   Actual: {"a":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[3,4]}
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: circularObj = circularObj2
 Expected: = {"a":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[3,4]}
   Actual: {"a":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[3,4]}
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: circularWrapper is circularWrapper2
 Expected: is {"content":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[5,6]}
   Actual: {"content":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[5,6]}
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: circularWrapper <> circularWrapper2
 Expected: ≠ {"content":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[5,6]}
   Actual: {"content":{"a":{"a":[Object],"b":[Array]},"b":[3,4]},"b":[5,6]}
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: veryLongCircularObj1=veryLongCircularObj2
 Expected: = {"me":[Object],"secondMe":[Object],"thirdMe":[Object],"meArray":[Array],"a":"............................................................","b":"............................................................","c":"............................................................","d":"............................................................","e":"............................................................","f":"............................................................","g":"............................................................","h":"............................................................","i":"............................................................","j":"............................................................","k":"............................................................","l":"............................................................"}
   Actual: {"me":[Object],"secondMe":[Object],"thirdMe":[Object],"meArray":[Array],"a":"............................................................","b":"............................................................","c":"............................................................","d":"............................................................","e":"............................................................","f":"............................................................","g":"............................................................","h":"............................................................","i":"............................................................","j":"............................................................","k":"............................................................","l":"............................................................"}
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: veryLongCircularObj1 is veryLongCircularObj2
 Expected: is {"me":[Object],"secondMe":[Object],"thirdMe":[Object],"meArray":[Array],"a":"............................................................","b":"............................................................","c":"............................................................","d":"............................................................","e":"............................................................","f":"............................................................","g":"............................................................","h":"............................................................","i":"............................................................","j":"............................................................","k":"............................................................","l":"............................................................"}
   Actual: {"me":[Object],"secondMe":[Object],"thirdMe":[Object],"meArray":[Array],"a":"............................................................","b":"............................................................","c":"............................................................","d":"............................................................","e":"............................................................","f":"............................................................","g":"............................................................","h":"............................................................","i":"............................................................","j":"............................................................","k":"............................................................","l":"............................................................"}
 
-********** Failed Wish **********
+********** Broken Wish **********
     Test: root --> 
     Wish: [
     1, 2, 3,
@@ -341,7 +341,7 @@ Expected: is {"me":[Object],"secondMe":[Object],"thirdMe":[Object],"meArray":[Ar
 Expected: = [1,2,3,"asdf","jkl",{"yyy":4,"iii":5,"jjj":NaN,"kkk":null,"mmm e":-10,"d":undefined}]
   Actual: [1,2,3,"asdf","jkl",{"yyy":4,"iii":5,"jjj":NaN,"kkk":null,"mmm e":-9,"d":undefined}]
 
-1 Exceptional Tests, 50 Failed Wishes, Mark: dfb8b
+1 Exceptional Tests, 50 Broken Wishes, Mark: dfb8b
 
 ###
 

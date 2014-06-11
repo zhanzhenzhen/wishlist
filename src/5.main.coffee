@@ -139,7 +139,7 @@ class npmWishes.Test
                             ancestors = m.getAncestors()
                             ancestors.reverse()
                             longDescription = ancestors.concat([m]).map((m) => m.description).join(" --> ")
-                            console.log("\n********** Failed Wish **********")
+                            console.log("\n********** Broken Wish **********")
                             console.log("    Test: #{longDescription}")
                             console.log("    Wish: #{n.description}")
                             console.log("Expected: #{n.expected}")
@@ -152,7 +152,7 @@ class npmWishes.Test
                             "All tests are OK. All wishes succeeded."
                         else
                             "#{exceptionTests.length} Exceptional Tests, " +
-                            "#{failureCount} Failed Wishes, " +
+                            "#{failureCount} Broken Wishes, " +
                             "Mark: #{mark}"
                     ) + "\n")
                     process.exit() if process?
