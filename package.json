@@ -1,8 +1,8 @@
 {
     "name": "wishes",
-    "version": "0.1.0",
-    "description": "wishes",
-    "keywords": ["wishes"],
+    "version": "0.1.1",
+    "description": "Super natural testing framework.",
+    "keywords": ["test", "testing", "unit", "bdd", "tdd", "mocha", "qunit", "karma", "jasmine", "vows", "qunitjs"],
     "author": "Zhenzhen Zhan <zhanzhenzhen@hotmail.com>",
     "homepage": "https://github.com/zhanzhenzhen/wishes",
     "licenses": [{

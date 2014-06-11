@@ -1,6 +1,6 @@
 # Wishes
 
-Very natural testing framework.
+Super natural testing framework.
 
 ![](http://zhanzhenzhen.github.io/wishes/demo.gif)
 
