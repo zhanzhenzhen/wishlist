@@ -1,16 +1,13 @@
-Wishes
-====
+# Wishes
 
-Very natural unit testing
+Very natural testing framework.
 
-Tutorial
-====
+![](http://zhanzhenzhen.github.io/wishes/demo.gif)
 
-[Tutorial](http://zhanzhenzhen.github.io/wishes/)
+# Tutorial
 
-Compile & Publish
-====
+[Click here to view the tutorial.](http://zhanzhenzhen.github.io/wishes/)
 
-This section is only for the author of this repo, so other developers can just ignore it.
+# Contributing
 
-For how to compile and publish, see "CONTRIBUTING.md".
+See "CONTRIBUTING.md".
