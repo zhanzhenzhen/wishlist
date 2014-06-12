@@ -1,6 +1,6 @@
-if npmWishes.environmentType == "browser"
-    window.npmWishes = npmWishes
-else if npmWishes.environmentType == "node"
-    module.exports = npmWishes
+if npmWishlist.environmentType == "browser"
+    window.npmWishlist = npmWishlist
+else if npmWishlist.environmentType == "node"
+    module.exports = npmWishlist
 else
     throw new Error()

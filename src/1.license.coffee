@@ -1,6 +1,6 @@
 ### @preserve
-Wishes
-https://github.com/zhanzhenzhen/wishes
+Wishlist
+https://github.com/zhanzhenzhen/wishlist
 (c) 2014 Zhenzhen Zhan
-Wishes may be freely distributed under the MIT license.
+Wishlist may be freely distributed under the MIT license.
 ###

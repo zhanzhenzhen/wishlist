@@ -1,12 +1,12 @@
-# Wishes
+# Wishlist
 
 Super natural testing framework.
 
-![](http://zhanzhenzhen.github.io/wishes/demo.gif)
+![](http://zhanzhenzhen.github.io/wishlist/demo.gif)
 
 # Tutorial
 
-[Click here to view the tutorial.](http://zhanzhenzhen.github.io/wishes/)
+[Click here to view the tutorial.](http://zhanzhenzhen.github.io/wishlist/)
 
 # Contributing
 

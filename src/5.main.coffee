@@ -1,4 +1,4 @@
-class npmWishes.Test
+class npmWishlist.Test
     constructor: (@description = "") ->
         @_children = []
         @_fun = =>
@@ -22,7 +22,7 @@ class npmWishes.Test
         @_wishlist
     add: ->
         newChild = null
-        if arguments[0] instanceof npmWishes.Test
+        if arguments[0] instanceof npmWishlist.Test
             newChild = arguments[0]
         else
             description = fun = wishlist = options = null
@@ -34,7 +34,7 @@ class npmWishes.Test
                         raw
                     else
                         ""
-                npmWishes.parseWishlist(combined)
+                npmWishlist.parseWishlist(combined)
             if typeof arguments[0] == "string"
                 description = arguments[0]
                 fun = arguments[1]
@@ -55,7 +55,7 @@ class npmWishes.Test
             description ?= ""
             wishlist ?= []
             options ?= {}
-            newChild = new npmWishes.Test(description).set(fun).setWishlist(wishlist)
+            newChild = new npmWishlist.Test(description).set(fun).setWishlist(wishlist)
             if options.async
                 newChild.async = true
         newChild.parent = @
@@ -80,7 +80,7 @@ class npmWishes.Test
     run: (showsMessage = true) ->
         @_resetContext()
         if @parent?
-            @env = npmWishes.objectClone(@parent.env)
+            @env = npmWishlist.objectClone(@parent.env)
         # We use `setTimeout(..., 0)` only to make all tests "unordered", at least theoretically.
         setTimeout(=>
             if exports? and module?.exports?
@@ -149,7 +149,7 @@ class npmWishes.Test
                             successCount++
                     ))
                     markString = markString.trim()
-                    mark = npmWishes.sha256(markString).substr(0, 5)
+                    mark = npmWishlist.sha256(markString).substr(0, 5)
                     console.log("\n" + (
                         (
                             if exceptionTests.length == 0
@@ -187,13 +187,13 @@ class npmWishes.Test
         # is not in `=>`.
         that = this
         interpret = (s) =>
-            npmWishes.parseExpression(s, Object.keys(@env)).forEach((m, index) =>
+            npmWishlist.parseExpression(s, Object.keys(@env)).forEach((m, index) =>
                 insertedString = "that.env."
                 pos = m + insertedString.length * index
                 s = s.substr(0, pos) + insertedString + s.substr(pos)
             )
             s
-        parsed = npmWishes.parseWish(wishStr)
+        parsed = npmWishlist.parseWish(wishStr)
         args = parsed.components.map((m, index) =>
             if index == parsed.components.length - 1
                 m
@@ -210,7 +210,7 @@ class npmWishes.Test
                 expected: "unknown"
             @wishResults.push(newResult)
     wish: (wishlistStr) ->
-        npmWishes.parseWishlist(wishlistStr).forEach((wishStr) =>
+        npmWishlist.parseWishlist(wishlistStr).forEach((wishStr) =>
             @_checkWish(wishStr)
         )
     equal: (actual, ruler, description = "") ->
@@ -219,7 +219,7 @@ class npmWishes.Test
             if Array.isArray(actual) and Array.isArray(ruler)
                 if ruler.every((m, index) =>
                     if m in objects
-                        npmWishes.objectIs(actual[index], m)
+                        npmWishlist.objectIs(actual[index], m)
                     else
                         objects.push(m) if typeof m == "object" and m != null
                         determine(actual[index], m)
@@ -231,7 +231,7 @@ class npmWishes.Test
                     typeof ruler == "object" and ruler != null
                 if Object.keys(ruler).every((m) =>
                     if ruler[m] in objects
-                        npmWishes.objectIs(actual[m], ruler[m])
+                        npmWishlist.objectIs(actual[m], ruler[m])
                     else
                         objects.push(ruler[m]) if typeof ruler[m] == "object" and ruler[m] != null
                         determine(actual[m], ruler[m])
@@ -240,13 +240,13 @@ class npmWishes.Test
                 else
                     false
             else
-                npmWishes.objectIs(actual, ruler)
+                npmWishlist.objectIs(actual, ruler)
         newResult =
             type: determine(actual, ruler)
             description: description
         if newResult.type == false
-            newResult.actual = npmWishes.valueToMessage(actual)
-            newResult.expected = "= " + npmWishes.valueToMessage(ruler)
+            newResult.actual = npmWishlist.valueToMessage(actual)
+            newResult.expected = "= " + npmWishlist.valueToMessage(ruler)
         @wishResults.push(newResult)
         @
     notEqual: (actual, ruler, description = "") ->
@@ -255,7 +255,7 @@ class npmWishes.Test
             if Array.isArray(actual) and Array.isArray(ruler)
                 if ruler.some((m, index) =>
                     if m in objects
-                        not npmWishes.objectIs(actual[index], m)
+                        not npmWishlist.objectIs(actual[index], m)
                     else
                         objects.push(m) if typeof m == "object" and m != null
                         determine(actual[index], m)
@@ -267,7 +267,7 @@ class npmWishes.Test
                     typeof ruler == "object" and ruler != null
                 if Object.keys(ruler).some((m) =>
                     if ruler[m] in objects
-                        not npmWishes.objectIs(actual[m], ruler[m])
+                        not npmWishlist.objectIs(actual[m], ruler[m])
                     else
                         objects.push(ruler[m]) if typeof ruler[m] == "object" and ruler[m] != null
                         determine(actual[m], ruler[m])
@@ -276,31 +276,31 @@ class npmWishes.Test
                 else
                     false
             else
-                not npmWishes.objectIs(actual, ruler)
+                not npmWishlist.objectIs(actual, ruler)
         newResult =
             type: determine(actual, ruler)
             description: description
         if newResult.type == false
-            newResult.actual = npmWishes.valueToMessage(actual)
-            newResult.expected = "≠ " + npmWishes.valueToMessage(ruler)
+            newResult.actual = npmWishlist.valueToMessage(actual)
+            newResult.expected = "≠ " + npmWishlist.valueToMessage(ruler)
         @wishResults.push(newResult)
         @
     is: (actual, ruler, description = "") ->
         newResult =
-            type: npmWishes.objectIs(actual, ruler)
+            type: npmWishlist.objectIs(actual, ruler)
             description: description
         if newResult.type == false
-            newResult.actual = npmWishes.valueToMessage(actual)
-            newResult.expected = "is " + npmWishes.valueToMessage(ruler)
+            newResult.actual = npmWishlist.valueToMessage(actual)
+            newResult.expected = "is " + npmWishlist.valueToMessage(ruler)
         @wishResults.push(newResult)
         @
     isnt: (actual, ruler, description = "") ->
         newResult =
-            type: not npmWishes.objectIs(actual, ruler)
+            type: not npmWishlist.objectIs(actual, ruler)
             description: description
         if newResult.type == false
-            newResult.actual = npmWishes.valueToMessage(actual)
-            newResult.expected = "isn't " + npmWishes.valueToMessage(ruler)
+            newResult.actual = npmWishlist.valueToMessage(actual)
+            newResult.expected = "isn't " + npmWishlist.valueToMessage(ruler)
         @wishResults.push(newResult)
         @
     throws: (fun, ruler, description = "") ->
@@ -351,8 +351,8 @@ class npmWishes.Test
             type: actual < ruler
             description: description
         if newResult.type == false
-            newResult.actual = npmWishes.valueToMessage(actual)
-            newResult.expected = "< " + npmWishes.valueToMessage(ruler)
+            newResult.actual = npmWishlist.valueToMessage(actual)
+            newResult.expected = "< " + npmWishlist.valueToMessage(ruler)
         @wishResults.push(newResult)
         @
     lessThanOrEqual: (actual, ruler, description = "") ->
@@ -360,8 +360,8 @@ class npmWishes.Test
             type: actual <= ruler
             description: description
         if newResult.type == false
-            newResult.actual = npmWishes.valueToMessage(actual)
-            newResult.expected = "<= " + npmWishes.valueToMessage(ruler)
+            newResult.actual = npmWishlist.valueToMessage(actual)
+            newResult.expected = "<= " + npmWishlist.valueToMessage(ruler)
         @wishResults.push(newResult)
         @
     greaterThan: (actual, ruler, description = "") ->
@@ -369,8 +369,8 @@ class npmWishes.Test
             type: actual > ruler
             description: description
         if newResult.type == false
-            newResult.actual = npmWishes.valueToMessage(actual)
-            newResult.expected = "> " + npmWishes.valueToMessage(ruler)
+            newResult.actual = npmWishlist.valueToMessage(actual)
+            newResult.expected = "> " + npmWishlist.valueToMessage(ruler)
         @wishResults.push(newResult)
         @
     greaterThanOrEqual: (actual, ruler, description = "") ->
@@ -378,12 +378,12 @@ class npmWishes.Test
             type: actual >= ruler
             description: description
         if newResult.type == false
-            newResult.actual = npmWishes.valueToMessage(actual)
-            newResult.expected = ">= " + npmWishes.valueToMessage(ruler)
+            newResult.actual = npmWishlist.valueToMessage(actual)
+            newResult.expected = ">= " + npmWishlist.valueToMessage(ruler)
         @wishResults.push(newResult)
         @
 # This function is equivalent to ECMAScript 6th's `Object.is`.
-npmWishes.objectIs = (a, b) ->
+npmWishlist.objectIs = (a, b) ->
     if typeof a == "number" and typeof b == "number"
         if a == 0 and b == 0
             1 / a == 1 / b
@@ -393,12 +393,12 @@ npmWishes.objectIs = (a, b) ->
             a == b
     else
         a == b
-npmWishes.objectClone = (x) ->
+npmWishlist.objectClone = (x) ->
     y = {}
     for key in Object.keys(x)
         y[key] = x[key]
     y
-npmWishes.valueToMessage = (value) ->
+npmWishlist.valueToMessage = (value) ->
     internal = (value, maxLevel) ->
         if value == undefined
             "undefined"
@@ -421,7 +421,7 @@ npmWishes.valueToMessage = (value) ->
         else if typeof value == "string"
             JSON.stringify(value.toString())
         else if typeof value == "number"
-            if npmWishes.objectIs(value, -0)
+            if npmWishlist.objectIs(value, -0)
                 "-0"
             else
                 value.toString()

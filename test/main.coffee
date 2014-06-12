@@ -1,9 +1,9 @@
-wishes =
+wishlist =
     if exports? and module?.exports?
-        require("../wishes")
+        require("../wishlist")
     else
-        npmWishes
-Test = wishes.Test
+        npmWishlist
+Test = wishlist.Test
 new Test("root"
 ).add(->
     unit(' true=true ')

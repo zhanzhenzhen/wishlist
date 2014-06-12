@@ -4,7 +4,7 @@
 # I used to use regex for this parser, but nearly all JS engine cannot execute it well.
 # Some report errors. Node even hangs up with CPU usage 100%. Very weird.
 # Maybe it's because this regex is very complicated, and nested. So I gave it up.
-npmWishes.parseExpression = (expStr, envNames) ->
+npmWishlist.parseExpression = (expStr, envNames) ->
     expStr += " " # add a space to simplify the search pattern
     if envNames.length == 0 then return []
     regex = new RegExp("^(" + envNames.join("|") + ")[^a-zA-Z0-9_$]", "g")
@@ -74,7 +74,7 @@ npmWishes.parseExpression = (expStr, envNames) ->
             i++
     positions
 # `wishStr` must be an already-trimmed string
-npmWishes.parseWish = (wishStr) ->
+npmWishlist.parseWish = (wishStr) ->
     parsed = null
     description = null
     [0, 1].forEach((round) ->
@@ -232,7 +232,7 @@ npmWishes.parseWish = (wishStr) ->
     parsed.components.push(JSON.stringify(description ? wishStr))
     parsed.components = parsed.components.map((m) -> m.trim())
     parsed
-npmWishes.parseWishlist = (wishlistStr) ->
+npmWishlist.parseWishlist = (wishlistStr) ->
     quote = null
     parenthesis = 0
     bracket = 0

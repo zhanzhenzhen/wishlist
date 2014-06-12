@@ -346,9 +346,9 @@ Expected: = [1,2,3,"asdf","jkl",{"yyy":4,"iii":5,"jjj":NaN,"kkk":null,"mmm e":-1
 ###
 
 if exports? and module?.exports?
-    Test = require("../wishes").Test
+    Test = require("../wishlist").Test
 else
-    Test = npmWishes.Test
+    Test = npmWishlist.Test
 new Test("root"
 ).set((v) ->
     v.var1 = 111

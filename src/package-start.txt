@@ -1,1 +1,1 @@
-npmWishes.packageInfo =
+npmWishlist.packageInfo =
