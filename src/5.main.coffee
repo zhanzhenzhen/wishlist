@@ -1,3 +1,7 @@
+# In `npmWishlist.Test`, the `wishes` property contains only separated wishes
+# (i.e. not including those defined and checked in a test function), but
+# the `wishResults` property includes results for all wishes.
+
 class npmWishlist.Test
     constructor: (@description = "") ->
         @_children = []
@@ -10,6 +14,7 @@ class npmWishlist.Test
         @env = {}
         @wishResults = []
         @result = null
+    # syntax: set([description], fun, [wishes], [options])
     set: ->
         description = fun = wishes = options = null
         normalizeWishlist = (raw) =>
