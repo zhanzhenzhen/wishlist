@@ -2,10 +2,10 @@
 
 The output should look something like this:
 
-2014-06-11T08:33:22.145Z OK: 16, Exception: 1, Pending: 1
-2014-06-11T08:33:23.087Z OK: 16, Exception: 1, Pending: 1
-2014-06-11T08:33:24.089Z OK: 16, Exception: 1, Pending: 1
-2014-06-11T08:33:25.091Z OK: 17, Exception: 1, Pending: 0
+2014-06-14T20:09:05.255Z OK: 16, Exception: 1, Pending: 1
+2014-06-14T20:09:06.195Z OK: 16, Exception: 1, Pending: 1
+2014-06-14T20:09:07.196Z OK: 16, Exception: 1, Pending: 1
+2014-06-14T20:09:08.198Z OK: 17, Exception: 1, Pending: 0
 
 ********** Exceptional Test **********
 Test: 
@@ -37,7 +37,7 @@ Expected: = 1234
 
 ********** Broken Wish **********
     Test: root --> 
-    Wish:  var2 <><><> a
+    Wish: var2 <><><> a
 Expected: ≠ 1234
   Actual: 1234
 
@@ -55,7 +55,7 @@ Expected: = true
 
 ********** Broken Wish **********
     Test: root --> nested test --> test 2 in nested test
-    Wish:  simple boolean test
+    Wish: simple boolean test
 Expected: = true
   Actual: false
 
@@ -98,6 +98,12 @@ Expected: = true
 ********** Broken Wish **********
     Test: root --> 
     Wish: inexistentVariable=inexistentVariable
+Expected: unknown
+  Actual: unknown
+
+********** Broken Wish **********
+    Test: root --> 
+    Wish: jiojaalgfj(lksfjeosjirg========;
 Expected: unknown
   Actual: unknown
 
@@ -341,7 +347,7 @@ Expected: is {"me":[Object],"secondMe":[Object],"thirdMe":[Object],"meArray":[Ar
 Expected: = [1,2,3,"asdf","jkl",{"yyy":4,"iii":5,"jjj":NaN,"kkk":null,"mmm e":-10,"d":undefined}]
   Actual: [1,2,3,"asdf","jkl",{"yyy":4,"iii":5,"jjj":NaN,"kkk":null,"mmm e":-9,"d":undefined}]
 
-1 tests of 18 exceptional. 50 wishes of 99 broken. Mark: dfb8b
+1 tests of 18 exceptional. 51 wishes of 100 broken. Mark: e739b
 
 ###
 
@@ -430,8 +436,10 @@ new Test("root"
     "(\"1\"===2)=true"
 ]).add(->
     undefined
-, "inexistentVariable=inexistentVariable"
-).add(->
+, """
+    inexistentVariable=inexistentVariable;
+    jiojaalgfj(lksfjeosjirg========;
+""").add(->
     falseFunction(true)
 , "true=true"
 ).add((v, t) ->

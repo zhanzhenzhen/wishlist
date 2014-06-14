@@ -230,7 +230,7 @@ npmWishlist.parseWish = (wishStr) ->
     )
     parsed.components.push(JSON.stringify((description ? wishStr).trim()))
     parsed
-npmWishlist.parseWishlist = (wishlistStr) ->
+npmWishlist.parseWishes = (wishlistStr) ->
     quote = null
     parenthesis = 0
     bracket = 0

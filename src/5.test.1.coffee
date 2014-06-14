@@ -18,8 +18,8 @@ class npmWishlist.Test
         @result = null
     # syntax: set([description], fun, [wishes], [options])
     set: ->
-        description = fun = wishes = options = null
-        normalizeWishlist = (raw) =>
+        description = fun = wishes = rawWishes = options = null
+        normalizeWishes = (raw) =>
             combined =
                 if Array.isArray(raw)
                     raw.join(";")
@@ -27,7 +27,7 @@ class npmWishlist.Test
                     raw
                 else
                     ""
-            npmWishlist.parseWishlist(combined)
+            npmWishlist.parseWishes(combined)
         if typeof arguments[0] == "string"
             description = arguments[0]
             fun = arguments[1]
@@ -35,7 +35,7 @@ class npmWishlist.Test
                     not Array.isArray(arguments[2])
                 options = arguments[2]
             else
-                wishes = normalizeWishlist(arguments[2])
+                rawWishes = arguments[2]
                 options = arguments[3]
         else
             fun = arguments[0]
@@ -43,14 +43,13 @@ class npmWishlist.Test
                     not Array.isArray(arguments[1])
                 options = arguments[1]
             else
-                wishes = normalizeWishlist(arguments[1])
+                rawWishes = arguments[1]
                 options = arguments[2]
-        description ?= ""
-        wishes ?= []
+        wishes = normalizeWishes(rawWishes)
         options ?= {}
-        @description = description
+        if description? then @description = description
         @fun = fun
-        @wishes = wishes
+        if rawWishes? then @wishes = wishes
         if options.async
             @async = true
         @
@@ -219,6 +218,6 @@ class npmWishlist.Test
                 expected: "unknown"
         @wishResults.push(result)
     wish: (wishlistStr) ->
-        npmWishlist.parseWishlist(wishlistStr).forEach((wishStr) =>
+        npmWishlist.parseWishes(wishlistStr).forEach((wishStr) =>
             @_checkWish(wishStr)
         )
