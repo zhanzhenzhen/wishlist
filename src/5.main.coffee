@@ -1,8 +1,8 @@
 class npmWishlist.Test
     constructor: (@description = "") ->
         @_children = []
-        @_fun = =>
-        @_wishlist = []
+        @fun = =>
+        @wishes = []
         @async = false
         @parent = null
         @_resetContext()
@@ -10,63 +10,63 @@ class npmWishlist.Test
         @env = {}
         @wishResults = []
         @result = null
-    set: (fun) ->
-        @_fun = fun
+    set: ->
+        description = fun = wishes = options = null
+        normalizeWishlist = (raw) =>
+            combined =
+                if Array.isArray(raw)
+                    raw.join(";")
+                else if typeof raw == "string"
+                    raw
+                else
+                    ""
+            npmWishlist.parseWishlist(combined)
+        if typeof arguments[0] == "string"
+            description = arguments[0]
+            fun = arguments[1]
+            if typeof arguments[2] == "object" and arguments[2] != null and
+                    not Array.isArray(arguments[2])
+                options = arguments[2]
+            else
+                wishes = normalizeWishlist(arguments[2])
+                options = arguments[3]
+        else
+            fun = arguments[0]
+            if typeof arguments[1] == "object" and arguments[1] != null and
+                    not Array.isArray(arguments[1])
+                options = arguments[1]
+            else
+                wishes = normalizeWishlist(arguments[1])
+                options = arguments[2]
+        description ?= ""
+        wishes ?= []
+        options ?= {}
+        @description = description
+        @fun = fun
+        @wishes = wishes
+        if options.async
+            @async = true
         @
-    get: ->
-        @_fun
-    setWishlist: (wishlist) ->
-        @_wishlist = wishlist
-        @
-    getWishlist: ->
-        @_wishlist
     add: ->
         newChild = null
         if arguments[0] instanceof npmWishlist.Test
             newChild = arguments[0]
         else
-            description = fun = wishlist = options = null
-            normalizeWishlist = (raw) =>
-                combined =
-                    if Array.isArray(raw)
-                        raw.join(";")
-                    else if typeof raw == "string"
-                        raw
-                    else
-                        ""
-                npmWishlist.parseWishlist(combined)
-            if typeof arguments[0] == "string"
-                description = arguments[0]
-                fun = arguments[1]
-                if typeof arguments[2] == "object" and arguments[2] != null and
-                        not Array.isArray(arguments[2])
-                    options = arguments[2]
-                else
-                    wishlist = normalizeWishlist(arguments[2])
-                    options = arguments[3]
-            else
-                fun = arguments[0]
-                if typeof arguments[1] == "object" and arguments[1] != null and
-                        not Array.isArray(arguments[1])
-                    options = arguments[1]
-                else
-                    wishlist = normalizeWishlist(arguments[1])
-                    options = arguments[2]
-            description ?= ""
-            wishlist ?= []
-            options ?= {}
-            newChild = new npmWishlist.Test(description).set(fun).setWishlist(wishlist)
-            if options.async
-                newChild.async = true
+            newChild = new npmWishlist.Test()
+            newChild.set(arguments...)
         newChild.parent = @
         @_children.push(newChild)
         @
-    addAsync: () ->
+    addAsync: ->
         args = []
         for m in arguments
             args.push(m)
-        args.push({async: true})
-        @add.apply(@, args)
+        lastArg = args[args.length - 1]
+        if typeof lastArg == "object" and lastArg != null and not Array.isArray(lastArg)
+            lastArg.async = true
+        else
+            args.push({async: true})
+        @add(args...)
     getChildren: ->
         # use a shallow copy to encapsule `_children` to prevent direct operation on the array
         @_children[..]
@@ -95,10 +95,10 @@ class npmWishlist.Test
                         """
                     )
                 )
-                domain.run(=> @_fun(@env, @))
+                domain.run(=> @fun(@env, @))
             else
                 try
-                    @_fun(@env, @)
+                    @fun(@env, @)
                 catch
                     @end({type: false})
             if not @result? and not @async
@@ -127,7 +127,7 @@ class npmWishlist.Test
                     exceptionTests.forEach((m) =>
                         console.log("\n********** Exceptional Test **********")
                         console.log("Test: #{m.description}")
-                        console.log("Function: #{m.get().toString()}")
+                        console.log("Function: #{m.fun.toString()}")
                         console.log(m.result.errorMessage) if m.result.errorMessage?
                     )
                     failureCount = 0
@@ -174,7 +174,7 @@ class npmWishlist.Test
     end: (result) ->
         if not @result?
             @result = result ? {type: true}
-            @getWishlist().forEach((m) =>
+            @wishes.forEach((m) =>
                 @_checkWish(m)
             )
             @getChildren().forEach((m) =>

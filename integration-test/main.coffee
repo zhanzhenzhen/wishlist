@@ -408,7 +408,7 @@ new Test("root"
     ]).set((env) ->
         env.var2 = 8888
         env.var3 = env.var1 * 2
-    ).setWishlist([
+    , [
         'var1 is var2'
         'var1 isnt var2'
         'var3=1'
