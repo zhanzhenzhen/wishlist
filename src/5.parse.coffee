@@ -73,7 +73,6 @@ npmWishlist.parseExpression = (expStr, envNames) ->
         else
             i++
     positions
-# `wishStr` must be an already-trimmed string
 npmWishlist.parseWish = (wishStr) ->
     parsed = null
     description = null
@@ -229,8 +228,7 @@ npmWishlist.parseWish = (wishStr) ->
                     wishStr
                 ]
     )
-    parsed.components.push(JSON.stringify(description ? wishStr))
-    parsed.components = parsed.components.map((m) -> m.trim())
+    parsed.components.push(JSON.stringify((description ? wishStr).trim()))
     parsed
 npmWishlist.parseWishlist = (wishlistStr) ->
     quote = null
