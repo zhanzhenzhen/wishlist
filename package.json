@@ -1,13 +1,13 @@
 {
     "name": "wishlist",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "Super natural testing framework.",
     "keywords": [
         "test", "testing", "async", "unit", "bdd", "tdd", "asynchronous",
         "mocha", "qunit", "karma", "jasmine", "vows", "qunitjs"
     ],
     "author": "Zhenzhen Zhan <zhanzhenzhen@hotmail.com>",
-    "homepage": "https://github.com/zhanzhenzhen/wishlist",
+    "homepage": "http://zhanzhenzhen.github.io/wishlist/",
     "licenses": [{
         "type": "MIT",
         "url": "https://github.com/zhanzhenzhen/wishlist/blob/master/LICENSE.txt"
