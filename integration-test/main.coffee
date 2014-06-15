@@ -2,10 +2,10 @@
 
 The output should look something like this:
 
-2014-06-14T20:09:05.255Z OK: 16, Exception: 1, Pending: 1
-2014-06-14T20:09:06.195Z OK: 16, Exception: 1, Pending: 1
-2014-06-14T20:09:07.196Z OK: 16, Exception: 1, Pending: 1
-2014-06-14T20:09:08.198Z OK: 17, Exception: 1, Pending: 0
+2014-06-15T09:20:04.655Z OK: 13, Exception: 1, Pending: 4
+2014-06-15T09:20:05.594Z OK: 13, Exception: 1, Pending: 4
+2014-06-15T09:20:06.595Z OK: 16, Exception: 1, Pending: 1
+2014-06-15T09:20:07.596Z OK: 17, Exception: 1, Pending: 0
 
 ********** Exceptional Test **********
 Test: 
@@ -392,6 +392,10 @@ new Test("root"
     '  (obj.unit>1)=true'
 ]).add(
     new Test("nested test"
+    ).setAsync((v, t) ->
+        setTimeout(->
+            t.end()
+        , 1500)
     ).add("test 1 in nested test", ->
         undefined
     , [

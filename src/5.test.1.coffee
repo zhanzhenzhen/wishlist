@@ -18,7 +18,7 @@ class npmWishlist.Test
         @result = null
     # syntax: set([description], fun, [wishes], [options])
     set: ->
-        description = fun = wishes = rawWishes = options = null
+        description = fun = wishes = rawWishes = options = undefined
         normalizeWishes = (raw) =>
             combined =
                 if Array.isArray(raw)
@@ -47,12 +47,21 @@ class npmWishlist.Test
                 options = arguments[2]
         wishes = normalizeWishes(rawWishes)
         options ?= {}
-        if description? then @description = description
+        if description != undefined then @description = description
         @fun = fun
-        if rawWishes? then @wishes = wishes
-        if options.async
-            @async = true
+        if rawWishes != undefined then @wishes = wishes
+        if options.async != undefined then @async = options.async
         @
+    setAsync: ->
+        args = []
+        for m in arguments
+            args.push(m)
+        lastArg = args[args.length - 1]
+        if typeof lastArg == "object" and lastArg != null and not Array.isArray(lastArg)
+            lastArg.async = true
+        else
+            args.push({async: true})
+        @set(args...)
     add: ->
         newChild = null
         if arguments[0] instanceof npmWishlist.Test
