@@ -6,6 +6,8 @@ awk 'FNR==1{print ""}1' src/*.coffee src/package-start.txt package.json src/pack
 
 # How to publish
 
+This section is for the author only, so other contributors can just ignore it.
+
 The compiled .js files should ONLY be included in the tagged commits. To achieve this goal, we put the release version into a new branch and then delete the branch. This approach makes sense because Git's gc does not delete tagged commits, regardless of whether a branch refers to it. Detailed steps:
 
 First, make sure all changes are recorded in master branch. Then, compile. Then:
