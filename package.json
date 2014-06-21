@@ -1,10 +1,10 @@
 {
     "name": "wishlist",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "description": "Super natural testing framework.",
     "keywords": [
         "test", "testing", "async", "unit", "bdd", "tdd", "asynchronous",
-        "mocha", "qunit", "karma", "jasmine", "vows", "qunitjs"
+        "mocha", "qunit", "karma", "jasmine", "vows", "qunitjs", "chai"
     ],
     "author": "Zhenzhen Zhan <zhanzhenzhen@hotmail.com>",
     "homepage": "http://zhanzhenzhen.github.io/wishlist/",

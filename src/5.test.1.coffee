@@ -218,7 +218,9 @@ class npmWishlist.Test
         result =
             try
                 # Must enclose it by "()", otherwise object literals can't be evaluated.
-                args = args.map((m) => eval("(#{m})"))
+                # Note: Ideally a single "()" pair is enough, but Safari has a strange bug
+                # that makes `eval("(-0)")` return +0. So we must use "(())" to workaround it.
+                args = args.map((m) => eval("((#{m}))"))
                 @["_check_" + parsed.type](args...)
             catch
                 type: false
