@@ -99,7 +99,8 @@ class npmWishlist.Test
         # We use `setTimeout(..., 0)` only to make all tests "unordered", at least theoretically.
         setTimeout(=>
             if exports? and module?.exports?
-                domain = require("domain").create()
+                # Must add `module.` prefix before `require` to prevent bundle.
+                domain = module.require("domain").create()
                 domain.on("error", (error) =>
                     @end(
                         type: false
