@@ -1,10 +1,6 @@
-wishlist =
-    if exports? and module?.exports?
-        require("../wishlist")
-    else
-        npmWishlist
+wishlist = npmWishlist ? require("../wishlist")
 Test = wishlist.Test
 new Test("root"
-).add(->
-    unit(' true=true ')
+).add((my, I) ->
+    I.wish(' true=true ')
 ).run()

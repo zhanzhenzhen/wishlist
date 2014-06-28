@@ -1,8 +1,14 @@
 npmWishlist = {}
 npmWishlist.environmentType =
-    if exports? and module?.exports?
+    if exports? and module?.exports? and process?.execPath? and typeof process.execPath == "string" and
+            process.execPath.search(/node/i) != -1
         "node"
-    else if window?
+    else if window? and navigator? and HTMLElement?
         "browser"
     else
         undefined
+npmWishlist.moduleSystem =
+    if exports? and module?.exports?
+        "commonjs"
+    else
+        null

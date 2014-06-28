@@ -1,6 +1,4 @@
 if npmWishlist.environmentType == "browser"
     window.npmWishlist = npmWishlist
-else if npmWishlist.environmentType == "node"
+if npmWishlist.moduleSystem == "commonjs"
     module.exports = npmWishlist
-else
-    throw new Error()

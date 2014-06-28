@@ -98,7 +98,7 @@ class npmWishlist.Test
             @env = npmWishlist.objectClone(@parent.env)
         # We use `setTimeout(..., 0)` only to make all tests "unordered", at least theoretically.
         setTimeout(=>
-            if exports? and module?.exports?
+            if npmWishlist.environmentType == "node"
                 # Must add `module.` prefix before `require` to prevent bundle.
                 domain = module.require("domain").create()
                 domain.on("error", (error) =>
