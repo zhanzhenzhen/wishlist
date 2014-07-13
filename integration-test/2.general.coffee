@@ -351,279 +351,281 @@ Expected: = [1,2,3,"asdf","jkl",{"yyy":4,"iii":5,"jjj":NaN,"kkk":null,"mmm e":-1
 
 ###
 
-Test = if npmWishlist? then npmWishlist.Test else require("../wishlist").Test
-new Test("root"
-).set((v) ->
-    v.var1 = 111
-    v.var2 = 1234
-).add("String.prototype test", (v) ->
-    v.str = "hello world"
-    v.wrongStr = "helloo world"
-, [
-    ' str.substr(4,1)="o" '
-    ' str.split(" ")=["hello","world"] '
-    ' str.split(" ")=["hello","world"] '
-    ' wrongStr.substr(4,1)="o" '
-    ' wrongStr.split(" ")=["hello","world"] '
-    ' wrongStr.split(" ")=["hello","world"] '
-]).add((v) ->
-    v.a = v.var2
-, """
-    Math.round(5.3)=5;
-    var1=var2:var1 equals var2;
-    var1<>var2;
-    var2=a : var1=========a;
-    var2<>a
-        : var2 <><><> a
-    ;
-""").add(->
-    undefined
-, [
-    '1+2+3=7'
-]).add((v) ->
-    v.obj = {}
-    v.obj.unit = ->
-        Math.random()
-    v.obj.unit()
-, [
-    '  (obj.unit>1)=true'
-]).add(
-    new Test("nested test"
-    ).setAsync((v, t) ->
+steps.push(->
+    console.log("----- General -----")
+    new Test("root"
+    ).set((v) ->
+        v.var1 = 111
+        v.var2 = 1234
+    ).add("String.prototype test", (v) ->
+        v.str = "hello world"
+        v.wrongStr = "helloo world"
+    , [
+        ' str.substr(4,1)="o" '
+        ' str.split(" ")=["hello","world"] '
+        ' str.split(" ")=["hello","world"] '
+        ' wrongStr.substr(4,1)="o" '
+        ' wrongStr.split(" ")=["hello","world"] '
+        ' wrongStr.split(" ")=["hello","world"] '
+    ]).add((v) ->
+        v.a = v.var2
+    , """
+        Math.round(5.3)=5;
+        var1=var2:var1 equals var2;
+        var1<>var2;
+        var2=a : var1=========a;
+        var2<>a
+            : var2 <><><> a
+        ;
+    """).add(->
+        undefined
+    , [
+        '1+2+3=7'
+    ]).add((v) ->
+        v.obj = {}
+        v.obj.unit = ->
+            Math.random()
+        v.obj.unit()
+    , [
+        '  (obj.unit>1)=true'
+    ]).add(
+        new Test("nested test"
+        ).setAsync((v, t) ->
+            setTimeout(->
+                t.end()
+            , 1500)
+        ).add("test 1 in nested test", ->
+            undefined
+        , [
+            'false=false'
+        ]).add("test 2 in nested test", ->
+            undefined
+        , [
+            "false=true: simple boolean test"
+        ])
+    ).add(
+        new Test("nested var"
+        ).add(->
+            undefined
+        , [
+            'var1=var2'
+        ]).add(->
+            undefined
+        , [
+            'var1<>var2'
+        ]).set((env) ->
+            env.var2 = 8888
+            env.var3 = env.var1 * 2
+        , [
+            'var1 is var2'
+            'var1 isnt var2'
+            'var3=1'
+        ])
+    ).addAsync("simple test 2", (v, t) ->
         setTimeout(->
+            v.slowVar = "yyy"
             t.end()
-        , 1500)
-    ).add("test 1 in nested test", ->
-        undefined
+        , 2500)
     , [
-        'false=false'
-    ]).add("test 2 in nested test", ->
-        undefined
-    , [
-        "false=true: simple boolean test"
-    ])
-).add(
-    new Test("nested var"
-    ).add(->
-        undefined
-    , [
-        'var1=var2'
+        "true=true :truthy unit"
+        "slowVar='yyy'"
+        "slowVar='iii'"
+        "slowVar='yyy'"
+        "var2=true"
     ]).add(->
         undefined
     , [
-        'var1<>var2'
-    ]).set((env) ->
-        env.var2 = 8888
-        env.var3 = env.var1 * 2
-    , [
-        'var1 is var2'
-        'var1 isnt var2'
-        'var3=1'
-    ])
-).addAsync("simple test 2", (v, t) ->
-    setTimeout(->
-        v.slowVar = "yyy"
-        t.end()
-    , 2500)
-, [
-    "true=true :truthy unit"
-    "slowVar='yyy'"
-    "slowVar='iii'"
-    "slowVar='yyy'"
-    "var2=true"
-]).add(->
-    undefined
-, [
-    "(\"1\"===2)=true"
-]).add(->
-    undefined
-, """
-    inexistentVariable=inexistentVariable;
-    jiojaalgfj(lksfjeosjirg========;
-""").add(->
-    falseFunction(true)
-, "true=true"
-).add((v, t) ->
-    t.wish("{} is {}")
-    t.wish("    [] is []             ")
-    t.wish("NaN is NaN")
-    t.wish("NaN = NaN")
-    t.wish("null<>null")
-    t.wish("undefined<>undefined")
-    v.sampleNaN1 = NaN
-    v.sampleNaN2 = NaN
-    t.wish('sampleNaN1=sampleNaN2')
-    t.wish('sampleNaN1=1')
-    t.wish("NaN= 3")
-    t.wish("'' =NaN")
-    t.wish("0=0")
-    t.wish("0=-0")
-    t.wish("0 is -0")
-    t.wish("-0 is 0")
-    class v.CustomError extends Error
-        constructor: (msg) -> super(msg)
-    v.a = ->
-        throw new Error()
-    v.b = ->
-    v.c = ->
-        throw new v.CustomError()
-    t.wish('a throws')
-    t.wish('b throws')
-    t.wish('a throws /kkk/')
-    t.wish('a throws /^$/')
-    t.wish('a throws Error')
-    t.wish('a throws CustomError')
-    t.wish('c throws Error')
-    t.wish('c throws CustomError')
-    t.wish('b')
-    t.wish('a')
-    t.wish('var2<1000')
-    t.wish('var2< 2000')
-    t.wish('var2<1234')
-    t.wish('var2 <=   1234')
-    t.wish('var2<=2000')
-    t.wish('var2<=1000')
-    t.wish('var2>1000')
-    t.wish('var2 >2000')
-    t.wish('var2 >= 2000')
-    t.wish('var2 >= 1234')
-    t.wish('var2>=1000')
-    t.wish(' "a"<"b" ')
-    t.wish(' "a">"b" ')
-    t.wish(' /=/.test("=")=true ')
-    t.wish(' /=/.test("=")=false ')
-    t.wish('Object .   is is Object.is')
-    t.wish('Object.is = Object. is')
-    t.wish(' "\\""="\\"abc" ')
-    t.wish(' 123<>123 ')
-    t.wish(' 123<>456 ')
-    t.wish(' {a:1,b:2}<>{a:1,b:1} ')
-    t.wish(' {a:1,b:2}<>{a:1,b:2} ')
-    t.wish(' {a:1,b:2}<>{a:1,b:2,c:function(){}} ')
-    t.wish(' 8 isnt 4 ')
-    t.wish(' NaN isnt NaN ')
-    t.wish(' {} isnt {} ')
-    # circular ----------------------------------------[
-    t.wish(' {a:1,b:2}={a:1,b:2,c:function(){}} ')
-    t.wish(' {a:{a:{a:{a:{}}}}}={a:{a:{a:{a:{}}}}} ')
-    t.wish(' {a:{a:{a:{a:{}}}}}={a:{a:{a:{a:1}}}} ')
-    v.circularObj = {}
-    v.circularObj.a = v.circularObj
-    v.circularObj.b = [3, 4]
-    v.circularObj2 = {}
-    v.circularObj2.a = v.circularObj2
-    v.circularObj2.b = [3, 4]
-    t.wish(' circularObj isnt circularObj ')
-    t.wish(' circularObj is circularObj ')
-    t.wish(' circularObj = circularObj ')
-    t.wish(' circularObj <> circularObj ')
-    t.wish(' circularObj isnt circularObj2 ')
-    t.wish(' circularObj is circularObj2 ')
-    t.wish(' circularObj = circularObj2 ')
-    t.wish(' circularObj <> circularObj2 ')
-    v.circularWrapper = {}
-    v.circularWrapper.content = v.circularObj
-    v.circularWrapper.b = [5, 6]
-    v.circularWrapper2 = {}
-    v.circularWrapper2.content = v.circularObj
-    v.circularWrapper2.b = [5, 6]
-    t.wish(' circularWrapper isnt circularWrapper2 ')
-    t.wish(' circularWrapper is circularWrapper2 ')
-    t.wish(' circularWrapper = circularWrapper2 ')
-    t.wish(' circularWrapper <> circularWrapper2 ')
-    # ]----------------------------------------
-).add((v, t) ->
-    v.veryLongCircularObj1 = {}
-    v.veryLongCircularObj1.me = v.veryLongCircularObj1
-    v.veryLongCircularObj1.secondMe = v.veryLongCircularObj1
-    v.veryLongCircularObj1.thirdMe = v.veryLongCircularObj1
-    v.veryLongCircularObj1.meArray = [v.veryLongCircularObj1, v.veryLongCircularObj1]
-    v.veryLongCircularObj1.a = "............................................................"
-    v.veryLongCircularObj1.b = "............................................................"
-    v.veryLongCircularObj1.c = "............................................................"
-    v.veryLongCircularObj1.d = "............................................................"
-    v.veryLongCircularObj1.e = "............................................................"
-    v.veryLongCircularObj1.f = "............................................................"
-    v.veryLongCircularObj1.g = "............................................................"
-    v.veryLongCircularObj1.h = "............................................................"
-    v.veryLongCircularObj1.i = "............................................................"
-    v.veryLongCircularObj1.j = "............................................................"
-    v.veryLongCircularObj1.k = "............................................................"
-    v.veryLongCircularObj1.l = "............................................................"
-    v.veryLongCircularObj2 = {}
-    v.veryLongCircularObj2.me = v.veryLongCircularObj2
-    v.veryLongCircularObj2.secondMe = v.veryLongCircularObj2
-    v.veryLongCircularObj2.thirdMe = v.veryLongCircularObj2
-    v.veryLongCircularObj2.meArray = [v.veryLongCircularObj2, v.veryLongCircularObj2]
-    v.veryLongCircularObj2.a = "............................................................"
-    v.veryLongCircularObj2.b = "............................................................"
-    v.veryLongCircularObj2.c = "............................................................"
-    v.veryLongCircularObj2.d = "............................................................"
-    v.veryLongCircularObj2.e = "............................................................"
-    v.veryLongCircularObj2.f = "............................................................"
-    v.veryLongCircularObj2.g = "............................................................"
-    v.veryLongCircularObj2.h = "............................................................"
-    v.veryLongCircularObj2.i = "............................................................"
-    v.veryLongCircularObj2.j = "............................................................"
-    v.veryLongCircularObj2.k = "............................................................"
-    v.veryLongCircularObj2.l = "............................................................"
-    t.wish('veryLongCircularObj1=veryLongCircularObj2')
-    t.wish('veryLongCircularObj1<>veryLongCircularObj2')
-    t.wish('veryLongCircularObj1 is veryLongCircularObj2')
-    t.wish('veryLongCircularObj1 isnt veryLongCircularObj2')
-).add((v, t) ->
-    t.wish("""
-        [
-            1, 2, 3,
-            "asdf", "jkl",
-            {
-                yyy: 4,
-                iii: 5,
-                jjj: NaN,
-                kkk: null,
-                "mmm e": -9,
-                d: undefined
-            }
-        ]
-        =
-        [
-            1, 2, 3,
-            "asdf", "jkl",
-            {
-                yyy: 4,
-                iii: 5,
-                jjj: NaN,
-                kkk: null,
-                "mmm e": -10,
-                d: undefined
-            }
-        ]
-    """)
-    t.wish("""
-        [
-            1, 2, 3,
-            "asdf", "jkl",
-            {
-                yyy: 4,
-                iii: 5,
-                jjj: NaN,
-                kkk: null,
-                "mmm e": -9,
-                d: undefined
-            }
-        ]
-        =
-        [
-            1, 2, 3,
-            "asdf", "jkl",
-            {
-                yyy: 4,
-                iii: 5,
-                jjj: NaN,
-                kkk: null,
-                "mmm e": -9,
-                d: undefined
-            }
-        ]
-    """)
-).run()
+        "(\"1\"===2)=true"
+    ]).add(->
+        undefined
+    , """
+        inexistentVariable=inexistentVariable;
+        jiojaalgfj(lksfjeosjirg========;
+    """).add(->
+        falseFunction(true)
+    , "true=true"
+    ).add((v, t) ->
+        t.wish("{} is {}")
+        t.wish("    [] is []             ")
+        t.wish("NaN is NaN")
+        t.wish("NaN = NaN")
+        t.wish("null<>null")
+        t.wish("undefined<>undefined")
+        v.sampleNaN1 = NaN
+        v.sampleNaN2 = NaN
+        t.wish('sampleNaN1=sampleNaN2')
+        t.wish('sampleNaN1=1')
+        t.wish("NaN= 3")
+        t.wish("'' =NaN")
+        t.wish("0=0")
+        t.wish("0=-0")
+        t.wish("0 is -0")
+        t.wish("-0 is 0")
+        class v.CustomError extends Error
+            constructor: (msg) -> super(msg)
+        v.a = ->
+            throw new Error()
+        v.b = ->
+        v.c = ->
+            throw new v.CustomError()
+        t.wish('a throws')
+        t.wish('b throws')
+        t.wish('a throws /kkk/')
+        t.wish('a throws /^$/')
+        t.wish('a throws Error')
+        t.wish('a throws CustomError')
+        t.wish('c throws Error')
+        t.wish('c throws CustomError')
+        t.wish('b')
+        t.wish('a')
+        t.wish('var2<1000')
+        t.wish('var2< 2000')
+        t.wish('var2<1234')
+        t.wish('var2 <=   1234')
+        t.wish('var2<=2000')
+        t.wish('var2<=1000')
+        t.wish('var2>1000')
+        t.wish('var2 >2000')
+        t.wish('var2 >= 2000')
+        t.wish('var2 >= 1234')
+        t.wish('var2>=1000')
+        t.wish(' "a"<"b" ')
+        t.wish(' "a">"b" ')
+        t.wish(' /=/.test("=")=true ')
+        t.wish(' /=/.test("=")=false ')
+        t.wish('Object .   is is Object.is')
+        t.wish('Object.is = Object. is')
+        t.wish(' "\\""="\\"abc" ')
+        t.wish(' 123<>123 ')
+        t.wish(' 123<>456 ')
+        t.wish(' {a:1,b:2}<>{a:1,b:1} ')
+        t.wish(' {a:1,b:2}<>{a:1,b:2} ')
+        t.wish(' {a:1,b:2}<>{a:1,b:2,c:function(){}} ')
+        t.wish(' 8 isnt 4 ')
+        t.wish(' NaN isnt NaN ')
+        t.wish(' {} isnt {} ')
+        # circular ----------------------------------------[
+        t.wish(' {a:1,b:2}={a:1,b:2,c:function(){}} ')
+        t.wish(' {a:{a:{a:{a:{}}}}}={a:{a:{a:{a:{}}}}} ')
+        t.wish(' {a:{a:{a:{a:{}}}}}={a:{a:{a:{a:1}}}} ')
+        v.circularObj = {}
+        v.circularObj.a = v.circularObj
+        v.circularObj.b = [3, 4]
+        v.circularObj2 = {}
+        v.circularObj2.a = v.circularObj2
+        v.circularObj2.b = [3, 4]
+        t.wish(' circularObj isnt circularObj ')
+        t.wish(' circularObj is circularObj ')
+        t.wish(' circularObj = circularObj ')
+        t.wish(' circularObj <> circularObj ')
+        t.wish(' circularObj isnt circularObj2 ')
+        t.wish(' circularObj is circularObj2 ')
+        t.wish(' circularObj = circularObj2 ')
+        t.wish(' circularObj <> circularObj2 ')
+        v.circularWrapper = {}
+        v.circularWrapper.content = v.circularObj
+        v.circularWrapper.b = [5, 6]
+        v.circularWrapper2 = {}
+        v.circularWrapper2.content = v.circularObj
+        v.circularWrapper2.b = [5, 6]
+        t.wish(' circularWrapper isnt circularWrapper2 ')
+        t.wish(' circularWrapper is circularWrapper2 ')
+        t.wish(' circularWrapper = circularWrapper2 ')
+        t.wish(' circularWrapper <> circularWrapper2 ')
+        # ]----------------------------------------
+    ).add((v, t) ->
+        v.veryLongCircularObj1 = {}
+        v.veryLongCircularObj1.me = v.veryLongCircularObj1
+        v.veryLongCircularObj1.secondMe = v.veryLongCircularObj1
+        v.veryLongCircularObj1.thirdMe = v.veryLongCircularObj1
+        v.veryLongCircularObj1.meArray = [v.veryLongCircularObj1, v.veryLongCircularObj1]
+        v.veryLongCircularObj1.a = "............................................................"
+        v.veryLongCircularObj1.b = "............................................................"
+        v.veryLongCircularObj1.c = "............................................................"
+        v.veryLongCircularObj1.d = "............................................................"
+        v.veryLongCircularObj1.e = "............................................................"
+        v.veryLongCircularObj1.f = "............................................................"
+        v.veryLongCircularObj1.g = "............................................................"
+        v.veryLongCircularObj1.h = "............................................................"
+        v.veryLongCircularObj1.i = "............................................................"
+        v.veryLongCircularObj1.j = "............................................................"
+        v.veryLongCircularObj1.k = "............................................................"
+        v.veryLongCircularObj1.l = "............................................................"
+        v.veryLongCircularObj2 = {}
+        v.veryLongCircularObj2.me = v.veryLongCircularObj2
+        v.veryLongCircularObj2.secondMe = v.veryLongCircularObj2
+        v.veryLongCircularObj2.thirdMe = v.veryLongCircularObj2
+        v.veryLongCircularObj2.meArray = [v.veryLongCircularObj2, v.veryLongCircularObj2]
+        v.veryLongCircularObj2.a = "............................................................"
+        v.veryLongCircularObj2.b = "............................................................"
+        v.veryLongCircularObj2.c = "............................................................"
+        v.veryLongCircularObj2.d = "............................................................"
+        v.veryLongCircularObj2.e = "............................................................"
+        v.veryLongCircularObj2.f = "............................................................"
+        v.veryLongCircularObj2.g = "............................................................"
+        v.veryLongCircularObj2.h = "............................................................"
+        v.veryLongCircularObj2.i = "............................................................"
+        v.veryLongCircularObj2.j = "............................................................"
+        v.veryLongCircularObj2.k = "............................................................"
+        v.veryLongCircularObj2.l = "............................................................"
+        t.wish('veryLongCircularObj1=veryLongCircularObj2')
+        t.wish('veryLongCircularObj1<>veryLongCircularObj2')
+        t.wish('veryLongCircularObj1 is veryLongCircularObj2')
+        t.wish('veryLongCircularObj1 isnt veryLongCircularObj2')
+    ).add((v, t) ->
+        t.wish("""
+            [
+                1, 2, 3,
+                "asdf", "jkl",
+                {
+                    yyy: 4,
+                    iii: 5,
+                    jjj: NaN,
+                    kkk: null,
+                    "mmm e": -9,
+                    d: undefined
+                }
+            ]
+            =
+            [
+                1, 2, 3,
+                "asdf", "jkl",
+                {
+                    yyy: 4,
+                    iii: 5,
+                    jjj: NaN,
+                    kkk: null,
+                    "mmm e": -10,
+                    d: undefined
+                }
+            ]
+        """)
+        t.wish("""
+            [
+                1, 2, 3,
+                "asdf", "jkl",
+                {
+                    yyy: 4,
+                    iii: 5,
+                    jjj: NaN,
+                    kkk: null,
+                    "mmm e": -9,
+                    d: undefined
+                }
+            ]
+            =
+            [
+                1, 2, 3,
+                "asdf", "jkl",
+                {
+                    yyy: 4,
+                    iii: 5,
+                    jjj: NaN,
+                    kkk: null,
+                    "mmm e": -9,
+                    d: undefined
+                }
+            ]
+        """)
+    ).run()
+)

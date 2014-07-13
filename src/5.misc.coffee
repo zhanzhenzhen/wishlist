@@ -48,3 +48,4 @@ npmWishlist.valueToMessage = (value) ->
     r = internal(value, 1) if r.length > 1000
     r = internal(value, 0) if r.length > 1000
     r
+npmWishlist.currentRootTest = null

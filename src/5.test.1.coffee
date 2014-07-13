@@ -92,7 +92,9 @@ class npmWishlist.Test
             r.push(test.parent)
             test = test.parent
         r
-    run: (showsMessage = true) ->
+    run: (isRoot = true) ->
+        if isRoot
+            npmWishlist.currentRootTest = @
         @_resetContext()
         if @parent?
             @env = npmWishlist.objectClone(@parent.env)
@@ -120,7 +122,7 @@ class npmWishlist.Test
             if not @result? and not @async
                 @end({type: true})
         , 0)
-        if showsMessage
+        if isRoot
             allTests = []
             allTests.push(@)
             traverse = (test) =>
@@ -181,7 +183,8 @@ class npmWishlist.Test
                         ) + " " +
                         "Mark: #{mark}"
                     ) + "\n")
-                    process.exit() if process?
+                    @allEnded = true
+                    npmWishlist.currentRootTest = null
             timer = setInterval(timerJob, 1000)
             # a delay slightly greater than 0 is useful for preventing a useless heartbeat
             # while there's no async test and computation takes very little time.
