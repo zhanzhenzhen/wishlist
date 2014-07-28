@@ -1,6 +1,6 @@
 {
     "name": "wishlist",
-    "version": "0.2.5",
+    "version": "0.2.6",
     "description": "Super natural testing framework.",
     "keywords": [
         "test", "testing", "async", "unit", "bdd", "tdd", "asynchronous", "assertion", "assert",
