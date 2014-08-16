@@ -5,7 +5,8 @@ the `wishResults` property includes results for all wishes.
 ###
 
 class npmWishlist.Test
-    # `allCount` and `endedCount` are redundant, but needed (for caching) ==========[
+    # `allCount` and `endedCount` refer to all descendant tests including itself.
+    # Both are redundant, but needed (for performance) ==========[
     constructor: (@description = "") ->
         @_children = []
         @fun = =>
@@ -104,6 +105,7 @@ class npmWishlist.Test
         r
     getAncestorsAndSelf: ->
         [@].concat(@getAncestors())
+    # all descendant tests including itself
     getAll: ->
         r = []
         r.push(@)
