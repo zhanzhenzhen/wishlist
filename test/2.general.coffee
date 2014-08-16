@@ -627,5 +627,7 @@ steps.push(->
                 }
             ]
         """)
+    ).after((v) ->
+        console.log("******************all ended!")
     ).run()
 )

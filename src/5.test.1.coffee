@@ -69,6 +69,7 @@ class npmWishlist.Test
             args.push({async: true})
         @set(args...)
     after: (@afterFun) ->
+        @
     add: ->
         newChild = null
         count = null
