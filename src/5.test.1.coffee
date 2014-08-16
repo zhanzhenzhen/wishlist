@@ -5,17 +5,22 @@ the `wishResults` property includes results for all wishes.
 ###
 
 class npmWishlist.Test
+    # `allCount` and `endedCount` are redundant, but needed (for caching) ==========[
     constructor: (@description = "") ->
         @_children = []
         @fun = =>
+        @afterFun = =>
         @wishes = []
         @async = false
         @parent = null
+        @allCount = 1
         @_resetContext()
     _resetContext: ->
         @env = {}
         @wishResults = []
         @result = null
+        @endedCount = 0
+    # ====================]
     # syntax: set([description], fun, [wishes], [options])
     set: ->
         description = fun = wishes = rawWishes = options = undefined
@@ -62,15 +67,20 @@ class npmWishlist.Test
         else
             args.push({async: true})
         @set(args...)
+    after: (@afterFun) ->
     add: ->
         newChild = null
+        count = null
         if arguments[0] instanceof npmWishlist.Test
             newChild = arguments[0]
+            count = newChild.getAll().length
         else
             newChild = new npmWishlist.Test()
             newChild.set(arguments...)
+            count = 1
         newChild.parent = @
         @_children.push(newChild)
+        @getAncestorsAndSelf().forEach((test) => test.allCount += count)
         @
     addAsync: ->
         args = []
@@ -92,6 +102,18 @@ class npmWishlist.Test
             r.push(test.parent)
             test = test.parent
         r
+    getAncestorsAndSelf: ->
+        [@].concat(@getAncestors())
+    getAll: ->
+        r = []
+        r.push(@)
+        traverse = (test) =>
+            test.getChildren().forEach((m) =>
+                r.push(m)
+                traverse(m)
+            )
+        traverse(@)
+        r
     run: (isRoot = true) ->
         if isRoot
             npmWishlist.currentRootTest = @
@@ -101,8 +123,7 @@ class npmWishlist.Test
         # We use `setTimeout(..., 0)` only to make all tests "unordered", at least theoretically.
         setTimeout(=>
             if npmWishlist.environmentType == "node"
-                # Must add `module.` prefix before `require` to prevent bundle.
-                domain = module.require("domain").create()
+                domain = require("domain").create()
                 domain.on("error", (error) =>
                     @end(
                         type: false
@@ -123,14 +144,7 @@ class npmWishlist.Test
                 @end({type: true})
         , 0)
         if isRoot
-            allTests = []
-            allTests.push(@)
-            traverse = (test) =>
-                test.getChildren().forEach((m) =>
-                    allTests.push(m)
-                    traverse(m)
-                )
-            traverse(@)
+            allTests = @getAll()
             console.log()
             # TODO: Scanning for timeout is now also in this function. It's inaccurate because interval
             # is 1 sec. We may need to create another timer with shorter interval for that.
@@ -183,7 +197,6 @@ class npmWishlist.Test
                         ) + " " +
                         "Mark: #{mark}"
                     ) + "\n")
-                    @allEnded = true
                     npmWishlist.currentRootTest = null
             timer = setInterval(timerJob, 1000)
             # a delay slightly greater than 0 is useful for preventing a useless heartbeat
@@ -195,6 +208,11 @@ class npmWishlist.Test
             @result = result ? {type: true}
             @wishes.forEach((m) =>
                 @_checkWish(m)
+            )
+            @getAncestorsAndSelf().forEach((test) =>
+                test.endedCount++
+                if test.endedCount == test.allCount
+                    test.afterFun()
             )
             @getChildren().forEach((m) =>
                 m.run(false)
