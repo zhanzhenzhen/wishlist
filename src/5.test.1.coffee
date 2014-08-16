@@ -215,7 +215,7 @@ class npmWishlist.Test
             @getAncestorsAndSelf().forEach((test) =>
                 test.endedCount++
                 if test.endedCount == test.allCount
-                    test.afterFun()
+                    test.afterFun(test.env)
             )
             @getChildren().forEach((m) =>
                 m.run(false)
