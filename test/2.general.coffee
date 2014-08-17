@@ -628,6 +628,9 @@ steps.push(->
             ]
         """)
     ).after((v) ->
+        console.log(v.var1)
+        v.var1 = null
+        console.log(v.var1)
         console.log("******************all ended!")
     ).run()
 )
