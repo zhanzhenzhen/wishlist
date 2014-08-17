@@ -8,10 +8,7 @@
     ],
     "author": "Zhenzhen Zhan <zhanzhenzhen@hotmail.com>",
     "homepage": "http://zhanzhenzhen.github.io/wishlist/",
-    "licenses": [{
-        "type": "MIT",
-        "url": "https://github.com/zhanzhenzhen/wishlist/blob/master/LICENSE.txt"
-    }],
+    "license": "MIT",
     "repository": {
         "type": "git",
         "url": "https://github.com/zhanzhenzhen/wishlist.git"
