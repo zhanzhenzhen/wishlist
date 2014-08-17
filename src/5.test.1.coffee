@@ -2,12 +2,13 @@
 In `wishlist.Test`, the `wishes` property contains only separated wishes
 (i.e. not including those defined and checked in a test function), but
 the `wishResults` property includes results for all wishes.
+Test names can be duplicate. Wish names can also be duplicate.
 ###
 
 class wishlist.Test
     # `allCount` and `endedCount` refer to all descendant tests including itself.
     # Both are redundant, but needed (for performance) ==========[
-    constructor: (@description = "") ->
+    constructor: (@name = "") ->
         @_children = []
         @fun = =>
         @afterFun = =>
@@ -22,9 +23,9 @@ class wishlist.Test
         @result = null
         @endedCount = 0
     # ====================]
-    # syntax: set([description], fun, [wishes], [options])
+    # syntax: set([name], fun, [wishes], [options])
     set: ->
-        description = fun = wishes = rawWishes = options = undefined
+        name = fun = wishes = rawWishes = options = undefined
         normalizeWishes = (raw) =>
             combined =
                 if Array.isArray(raw)
@@ -35,7 +36,7 @@ class wishlist.Test
                     ""
             wishlist.parseWishes(combined)
         if typeof arguments[0] == "string"
-            description = arguments[0]
+            name = arguments[0]
             fun = arguments[1]
             if typeof arguments[2] == "object" and arguments[2] != null and
                     not Array.isArray(arguments[2])
@@ -53,7 +54,7 @@ class wishlist.Test
                 options = arguments[2]
         wishes = normalizeWishes(rawWishes)
         options ?= {}
-        if description != undefined then @description = description
+        if name != undefined then @name = name
         @fun = fun
         if rawWishes != undefined then @wishes = wishes
         if options.async != undefined then @async = options.async
@@ -161,7 +162,7 @@ class wishlist.Test
                     clearInterval(timer)
                     exceptionTests.forEach((m) =>
                         console.log("\n********** Exceptional Test **********")
-                        console.log("Test: #{m.description}")
+                        console.log("Test: #{m.name}")
                         console.log("Function: #{m.fun.toString()}")
                         console.log(m.result.errorMessage) if m.result.errorMessage?
                     )
@@ -174,10 +175,10 @@ class wishlist.Test
                             failureCount++
                             ancestors = m.getAncestors()
                             ancestors.reverse()
-                            longDescription = ancestors.concat([m]).map((m) => m.description).join(" --> ")
+                            longName = ancestors.concat([m]).map((m) => m.name).join(" --> ")
                             console.log("\n********** Broken Wish **********")
-                            console.log("    Test: #{longDescription}")
-                            console.log("    Wish: #{n.description}")
+                            console.log("    Test: #{longName}")
+                            console.log("    Wish: #{n.name}")
                             console.log("Expected: #{n.expected}")
                             console.log("  Actual: #{n.actual}")
                         else
@@ -239,7 +240,7 @@ class wishlist.Test
             else
                 interpret(m)
         )
-        description = JSON.parse(args[args.length - 1])
+        name = JSON.parse(args[args.length - 1])
         result =
             try
                 # Must enclose it by "()", otherwise object literals can't be evaluated.
@@ -249,7 +250,7 @@ class wishlist.Test
                 @["_check_" + parsed.type](args...)
             catch
                 type: false
-                description: description
+                name: name
                 actual: "unknown"
                 expected: "unknown"
         @wishResults.push(result)

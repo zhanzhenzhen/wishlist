@@ -1,4 +1,4 @@
-wishlist.Test::_check_equal = (actual, ruler, description = "") ->
+wishlist.Test::_check_equal = (actual, ruler, name = "") ->
     objects = [] # This variable is to avoid circular object/array.
     determine = (actual, ruler) =>
         if Array.isArray(actual) and Array.isArray(ruler)
@@ -28,12 +28,12 @@ wishlist.Test::_check_equal = (actual, ruler, description = "") ->
             wishlist.objectIs(actual, ruler)
     result =
         type: determine(actual, ruler)
-        description: description
+        name: name
     if result.type == false
         result.actual = wishlist.valueToMessage(actual)
         result.expected = "= " + wishlist.valueToMessage(ruler)
     result
-wishlist.Test::_check_notEqual = (actual, ruler, description = "") ->
+wishlist.Test::_check_notEqual = (actual, ruler, name = "") ->
     objects = [] # This variable is to avoid circular object/array.
     determine = (actual, ruler) =>
         if Array.isArray(actual) and Array.isArray(ruler)
@@ -63,28 +63,28 @@ wishlist.Test::_check_notEqual = (actual, ruler, description = "") ->
             not wishlist.objectIs(actual, ruler)
     result =
         type: determine(actual, ruler)
-        description: description
+        name: name
     if result.type == false
         result.actual = wishlist.valueToMessage(actual)
         result.expected = "≠ " + wishlist.valueToMessage(ruler)
     result
-wishlist.Test::_check_is = (actual, ruler, description = "") ->
+wishlist.Test::_check_is = (actual, ruler, name = "") ->
     result =
         type: wishlist.objectIs(actual, ruler)
-        description: description
+        name: name
     if result.type == false
         result.actual = wishlist.valueToMessage(actual)
         result.expected = "is " + wishlist.valueToMessage(ruler)
     result
-wishlist.Test::_check_isnt = (actual, ruler, description = "") ->
+wishlist.Test::_check_isnt = (actual, ruler, name = "") ->
     result =
         type: not wishlist.objectIs(actual, ruler)
-        description: description
+        name: name
     if result.type == false
         result.actual = wishlist.valueToMessage(actual)
         result.expected = "isn't " + wishlist.valueToMessage(ruler)
     result
-wishlist.Test::_check_throws = (fun, ruler, description = "") ->
+wishlist.Test::_check_throws = (fun, ruler, name = "") ->
     passed = false
     resultType =
         try
@@ -106,12 +106,12 @@ wishlist.Test::_check_throws = (fun, ruler, description = "") ->
                     false
     result =
         type: resultType
-        description: description
+        name: name
     if result.type == false
         result.actual = if passed then "no exception" else "another exception"
         result.expected = if passed then "exception" else "an exception"
     result
-wishlist.Test::_check_doesNotThrow = (fun, description = "") ->
+wishlist.Test::_check_doesNotThrow = (fun, name = "") ->
     resultType =
         try
             fun()
@@ -120,39 +120,39 @@ wishlist.Test::_check_doesNotThrow = (fun, description = "") ->
             false
     result =
         type: resultType
-        description: description
+        name: name
     if result.type == false
         result.actual = "exception"
         result.expected = "no exception"
     result
-wishlist.Test::_check_lessThan = (actual, ruler, description = "") ->
+wishlist.Test::_check_lessThan = (actual, ruler, name = "") ->
     result =
         type: actual < ruler
-        description: description
+        name: name
     if result.type == false
         result.actual = wishlist.valueToMessage(actual)
         result.expected = "< " + wishlist.valueToMessage(ruler)
     result
-wishlist.Test::_check_lessThanOrEqual = (actual, ruler, description = "") ->
+wishlist.Test::_check_lessThanOrEqual = (actual, ruler, name = "") ->
     result =
         type: actual <= ruler
-        description: description
+        name: name
     if result.type == false
         result.actual = wishlist.valueToMessage(actual)
         result.expected = "<= " + wishlist.valueToMessage(ruler)
     result
-wishlist.Test::_check_greaterThan = (actual, ruler, description = "") ->
+wishlist.Test::_check_greaterThan = (actual, ruler, name = "") ->
     result =
         type: actual > ruler
-        description: description
+        name: name
     if result.type == false
         result.actual = wishlist.valueToMessage(actual)
         result.expected = "> " + wishlist.valueToMessage(ruler)
     result
-wishlist.Test::_check_greaterThanOrEqual = (actual, ruler, description = "") ->
+wishlist.Test::_check_greaterThanOrEqual = (actual, ruler, name = "") ->
     result =
         type: actual >= ruler
-        description: description
+        name: name
     if result.type == false
         result.actual = wishlist.valueToMessage(actual)
         result.expected = ">= " + wishlist.valueToMessage(ruler)

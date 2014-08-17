@@ -75,7 +75,7 @@ wishlist.parseExpression = (expStr, envNames) ->
     positions
 wishlist.parseWish = (wishStr) ->
     parsed = null
-    description = null
+    name = null
     [0, 1].forEach((round) ->
         quote = null
         parenthesis = 0
@@ -138,7 +138,7 @@ wishlist.parseWish = (wishStr) ->
             else if quote == null and not oldDotAffected and parenthesis == bracket == brace == 0
                 if round == 0
                     if c == ":"
-                        description = wishStr.substr(i + 1)
+                        name = wishStr.substr(i + 1)
                         wishStr = wishStr.substr(0, i)
                         break
                 else if round == 1
@@ -228,7 +228,7 @@ wishlist.parseWish = (wishStr) ->
                     wishStr
                 ]
     )
-    parsed.components.push(JSON.stringify((description ? wishStr).trim()))
+    parsed.components.push(JSON.stringify((name ? wishStr).trim()))
     parsed
 wishlist.parseWishes = (wishesStr) ->
     quote = null
