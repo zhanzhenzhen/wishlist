@@ -1,7 +1,7 @@
 # How to compile
 
 ```bash
-npm install && awk 'FNR==1{print ""}1' src/*.coffee src/package-start.txt package.json src/package-end.txt | node_modules/coffee-script/bin/coffee -cs > wishlist.js && node_modules/uglify-js/bin/uglifyjs wishlist.js -o wishlist.min.js -m --screw-ie8 --comments && awk 'FNR==1{print ""}1' test/*.coffee | node_modules/coffee-script/bin/coffee -cs > test/compiled.js
+npm install && awk 'FNR==1{print ""}1' src/*.coffee | node_modules/coffee-script/bin/coffee -cs > wishlist.js && node_modules/uglify-js/bin/uglifyjs wishlist.js -o wishlist.min.js -m --screw-ie8 --comments && awk 'FNR==1{print ""}1' test/*.coffee | node_modules/coffee-script/bin/coffee -cs > test/compiled.js
 ```
 
 # How to Test
