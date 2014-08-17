@@ -2,20 +2,22 @@
 
 The output should look something like this:
 
-2014-06-15T09:20:04.655Z OK: 13, Exception: 1, Pending: 4
-2014-06-15T09:20:05.594Z OK: 13, Exception: 1, Pending: 4
-2014-06-15T09:20:06.595Z OK: 16, Exception: 1, Pending: 1
-2014-06-15T09:20:07.596Z OK: 17, Exception: 1, Pending: 0
+2014-08-17T09:34:22.788Z OK: 13, Exception: 1, Pending: 4
+2014-08-17T09:34:23.757Z OK: 13, Exception: 1, Pending: 4
+2014-08-17T09:34:24.759Z OK: 16, Exception: 1, Pending: 1
+111
+null
+******************all ended!
+2014-08-17T09:34:25.760Z OK: 17, Exception: 1, Pending: 0
 
 ********** Exceptional Test **********
 Test: 
 Function: function () {
-    return falseFunction(true);
-  }
+      return falseFunction(true);
+    }
 Error Name: ReferenceError
 Error Message: falseFunction is not defined
 Error Stack: ...
-
 
 ********** Broken Wish **********
     Test: root --> String.prototype test
