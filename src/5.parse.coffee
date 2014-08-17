@@ -4,7 +4,7 @@
 # I used to use regex for this parser, but nearly all JS engine cannot execute it well.
 # Some report errors. Node even hangs up with CPU usage 100%. Very weird.
 # Maybe it's because this regex is very complicated, and nested. So I gave it up.
-npmWishlist.parseExpression = (expStr, envNames) ->
+wishlist.parseExpression = (expStr, envNames) ->
     expStr += " " # add a space to simplify the search pattern
     if envNames.length == 0 then return []
     regex = new RegExp("^(" + envNames.join("|") + ")[^a-zA-Z0-9_$]", "g")
@@ -73,7 +73,7 @@ npmWishlist.parseExpression = (expStr, envNames) ->
         else
             i++
     positions
-npmWishlist.parseWish = (wishStr) ->
+wishlist.parseWish = (wishStr) ->
     parsed = null
     description = null
     [0, 1].forEach((round) ->
@@ -230,7 +230,7 @@ npmWishlist.parseWish = (wishStr) ->
     )
     parsed.components.push(JSON.stringify((description ? wishStr).trim()))
     parsed
-npmWishlist.parseWishes = (wishlistStr) ->
+wishlist.parseWishes = (wishesStr) ->
     quote = null
     parenthesis = 0
     bracket = 0
@@ -238,8 +238,8 @@ npmWishlist.parseWishes = (wishlistStr) ->
     slashQuoteReady = true
     positions = []
     i = 0
-    while i < wishlistStr.length
-        c = wishlistStr[i]
+    while i < wishesStr.length
+        c = wishesStr[i]
         oldSlashQuoteReady = slashQuoteReady
         if quote == null
             if "a" <= c <= "z" or "A" <= c <= "Z" or "0" <= c <= "9" or
@@ -290,10 +290,10 @@ npmWishlist.parseWishes = (wishlistStr) ->
     r = []
     lastIndex = -1
     positions.forEach((index) ->
-        s = wishlistStr.substring(lastIndex + 1, index).trim()
+        s = wishesStr.substring(lastIndex + 1, index).trim()
         r.push(s) if s != ""
         lastIndex = index
     )
-    s = wishlistStr.substr(lastIndex + 1).trim()
+    s = wishesStr.substr(lastIndex + 1).trim()
     r.push(s) if s != ""
     r

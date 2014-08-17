@@ -1,5 +1,5 @@
 # This function is equivalent to ECMAScript 6th's `Object.is`.
-npmWishlist.objectIs = (a, b) ->
+wishlist.objectIs = (a, b) ->
     if typeof a == "number" and typeof b == "number"
         if a == 0 and b == 0
             1 / a == 1 / b
@@ -9,12 +9,12 @@ npmWishlist.objectIs = (a, b) ->
             a == b
     else
         a == b
-npmWishlist.objectClone = (x) ->
+wishlist.objectClone = (x) ->
     y = {}
     for key in Object.keys(x)
         y[key] = x[key]
     y
-npmWishlist.valueToMessage = (value) ->
+wishlist.valueToMessage = (value) ->
     internal = (value, maxLevel) ->
         if value == undefined
             "undefined"
@@ -37,7 +37,7 @@ npmWishlist.valueToMessage = (value) ->
         else if typeof value == "string"
             JSON.stringify(value.toString())
         else if typeof value == "number"
-            if npmWishlist.objectIs(value, -0)
+            if wishlist.objectIs(value, -0)
                 "-0"
             else
                 value.toString()
@@ -48,4 +48,4 @@ npmWishlist.valueToMessage = (value) ->
     r = internal(value, 1) if r.length > 1000
     r = internal(value, 0) if r.length > 1000
     r
-npmWishlist.currentRootTest = null
+wishlist.currentRootTest = null

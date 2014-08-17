@@ -1,5 +1,5 @@
-npmWishlist = {}
-npmWishlist.environmentType =
+wishlist = {}
+wishlist.environmentType =
     if exports? and module?.exports? and process?.execPath? and typeof process.execPath == "string" and
             process.execPath.search(/node/i) != -1
         "node"
@@ -7,7 +7,7 @@ npmWishlist.environmentType =
         "browser"
     else
         undefined
-npmWishlist.moduleSystem =
+wishlist.moduleSystem =
     if exports? and module?.exports?
         "commonjs"
     else

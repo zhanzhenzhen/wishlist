@@ -1,10 +1,10 @@
 ###
-In `npmWishlist.Test`, the `wishes` property contains only separated wishes
+In `wishlist.Test`, the `wishes` property contains only separated wishes
 (i.e. not including those defined and checked in a test function), but
 the `wishResults` property includes results for all wishes.
 ###
 
-class npmWishlist.Test
+class wishlist.Test
     # `allCount` and `endedCount` refer to all descendant tests including itself.
     # Both are redundant, but needed (for performance) ==========[
     constructor: (@description = "") ->
@@ -33,7 +33,7 @@ class npmWishlist.Test
                     raw
                 else
                     ""
-            npmWishlist.parseWishes(combined)
+            wishlist.parseWishes(combined)
         if typeof arguments[0] == "string"
             description = arguments[0]
             fun = arguments[1]
@@ -73,11 +73,11 @@ class npmWishlist.Test
     add: ->
         newChild = null
         count = null
-        if arguments[0] instanceof npmWishlist.Test
+        if arguments[0] instanceof wishlist.Test
             newChild = arguments[0]
             count = newChild.getAll().length
         else
-            newChild = new npmWishlist.Test()
+            newChild = new wishlist.Test()
             newChild.set(arguments...)
             count = 1
         newChild.parent = @
@@ -119,13 +119,13 @@ class npmWishlist.Test
         r
     run: (isRoot = true) ->
         if isRoot
-            npmWishlist.currentRootTest = @
+            wishlist.currentRootTest = @
         @_resetContext()
         if @parent?
-            @env = npmWishlist.objectClone(@parent.env)
+            @env = wishlist.objectClone(@parent.env)
         # We use `setTimeout(..., 0)` only to make all tests "unordered", at least theoretically.
         setTimeout(=>
-            if npmWishlist.environmentType == "node"
+            if wishlist.environmentType == "node"
                 domain = require("domain").create()
                 domain.on("error", (error) =>
                     @end(
@@ -184,7 +184,7 @@ class npmWishlist.Test
                             successCount++
                     ))
                     markString = markString.trim()
-                    mark = npmWishlist.sha256(markString).substr(0, 5)
+                    mark = wishlist.sha256(markString).substr(0, 5)
                     console.log("\n" + (
                         (
                             if exceptionTests.length == 0
@@ -200,7 +200,7 @@ class npmWishlist.Test
                         ) + " " +
                         "Mark: #{mark}"
                     ) + "\n")
-                    npmWishlist.currentRootTest = null
+                    wishlist.currentRootTest = null
             timer = setInterval(timerJob, 1000)
             # a delay slightly greater than 0 is useful for preventing a useless heartbeat
             # while there's no async test and computation takes very little time.
@@ -226,13 +226,13 @@ class npmWishlist.Test
         # so in `eval` in fat arrow functions we must use `that`.
         that = this
         interpret = (s) =>
-            npmWishlist.parseExpression(s, Object.keys(@env)).forEach((m, index) =>
+            wishlist.parseExpression(s, Object.keys(@env)).forEach((m, index) =>
                 insertedString = "that.env."
                 pos = m + insertedString.length * index
                 s = s.substr(0, pos) + insertedString + s.substr(pos)
             )
             s
-        parsed = npmWishlist.parseWish(wishStr)
+        parsed = wishlist.parseWish(wishStr)
         args = parsed.components.map((m, index) =>
             if index == parsed.components.length - 1
                 m
@@ -253,7 +253,7 @@ class npmWishlist.Test
                 actual: "unknown"
                 expected: "unknown"
         @wishResults.push(result)
-    wish: (wishlistStr) ->
-        npmWishlist.parseWishes(wishlistStr).forEach((wishStr) =>
+    wish: (wishesStr) ->
+        wishlist.parseWishes(wishesStr).forEach((wishStr) =>
             @_checkWish(wishStr)
         )
