@@ -2,13 +2,13 @@
 
 The output should look something like this:
 
-2014-08-17T09:34:22.788Z OK: 13, Exception: 1, Pending: 4
-2014-08-17T09:34:23.757Z OK: 13, Exception: 1, Pending: 4
-2014-08-17T09:34:24.759Z OK: 16, Exception: 1, Pending: 1
-111
-null
-******************all ended!
-2014-08-17T09:34:25.760Z OK: 17, Exception: 1, Pending: 0
+2014-08-18T09:11:30.700Z OK: 13, Exception: 1, Pending: 4
+2014-08-18T09:11:31.670Z OK: 13, Exception: 1, Pending: 4
+qwer
+ReferenceError: inexistentFunction is not defined
+    ...
+2014-08-18T09:11:32.670Z OK: 16, Exception: 1, Pending: 1
+2014-08-18T09:11:33.671Z OK: 17, Exception: 1, Pending: 0
 
 ********** Exceptional Test **********
 Test: 
@@ -17,7 +17,8 @@ Function: function () {
     }
 Error Name: ReferenceError
 Error Message: falseFunction is not defined
-Error Stack: ...
+Error Stack: ReferenceError: falseFunction is not defined
+    ...
 
 ********** Broken Wish **********
     Test: root --> String.prototype test
@@ -404,7 +405,11 @@ steps.push(->
             undefined
         , [
             "false=true: simple boolean test"
-        ])
+        ]).after(->
+            console.log("qwer")
+            inexistentFunction()
+            console.log("asdf")
+        )
     ).add(
         new Test("nested var"
         ).add(->

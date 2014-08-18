@@ -216,12 +216,24 @@ class wishlist.Test
             @getAncestorsAndSelf().forEach((test) =>
                 test.endedCount++
                 if test.endedCount == test.allCount
-                    test.afterFun(test.env)
+                    test._tryCallFun(=> test.afterFun(test.env))
             )
             @getChildren().forEach((m) =>
                 m.run(false)
             )
         @
+    _tryCallFun: (fun) ->
+        if wishlist.environmentType == "node"
+            domain = require("domain").create()
+            domain.on("error", (error) =>
+                console.log(error.stack)
+            )
+            domain.run(=> fun())
+        else
+            try
+                fun()
+            catch
+                console.log("Error!")
     _checkWish: (wishStr) ->
         # Reason for `that`: CoffeeScript cannot detect `this` keyword in `eval` string,
         # so in `eval` in fat arrow functions we must use `that`.
