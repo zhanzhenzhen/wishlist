@@ -1,6 +1,8 @@
 steps.push(->
     console.log("----- Flow -----")
     new Test(
+    ).set((v, t) ->
+        v.a = 1
     ).add(
         new Test(
         ).after((v) ->
@@ -12,6 +14,9 @@ steps.push(->
             t.end()
         , 2500)
     ).after((v) ->
+        console.log(v.a)
+        v.a = 2
+        console.log(v.a)
         console.log("after 2")
     ).run()
 )
