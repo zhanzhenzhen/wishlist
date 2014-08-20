@@ -3,6 +3,7 @@ In `wishlist.Test`, the `wishes` property contains only separated wishes
 (i.e. not including those defined and checked in a test function), but
 the `wishResults` property includes results for all wishes.
 Test names can be duplicate. Wish names can also be duplicate.
+Restriction: On browser it doesn't work well with exceptional tests.
 ###
 
 class wishlist.Test
