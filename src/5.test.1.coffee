@@ -137,15 +137,20 @@ class wishlist.Test
                             Error Stack: #{error.stack}
                         """
                     )
+                    domain.dispose()
                 )
-                domain.run(=> @fun(@env, @))
+                domain.run(=> process.nextTick(=>
+                    @fun(@env, @)
+                    if not @result? and not @async
+                        @end({type: true})
+                ))
             else
                 try
                     @fun(@env, @)
+                    if not @result? and not @async
+                        @end({type: true})
                 catch
                     @end({type: false})
-            if not @result? and not @async
-                @end({type: true})
         , 0)
         if isRoot
             allTests = @getAll()
@@ -227,8 +232,9 @@ class wishlist.Test
             domain = require("domain").create()
             domain.on("error", (error) =>
                 console.log(error.stack)
+                domain.dispose()
             )
-            domain.run(=> fun())
+            domain.run(=> process.nextTick(fun))
         else
             try
                 fun()

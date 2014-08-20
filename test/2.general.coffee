@@ -405,11 +405,7 @@ steps.push(->
             undefined
         , [
             "false=true: simple boolean test"
-        ]).after(->
-            console.log("qwer")
-            inexistentFunction()
-            console.log("asdf")
-        )
+        ])
     ).add(
         new Test("nested var"
         ).add(->
@@ -439,7 +435,17 @@ steps.push(->
         "slowVar='iii'"
         "slowVar='yyy'"
         "var2=true"
-    ]).add(->
+    ]).addAsync("error in async", (v, t) ->
+        setTimeout(->
+            falseFunction()
+        , 2200)
+        k = 0
+        a = setInterval(->
+            k++
+            if k == 20 then clearInterval(a)
+            b = 1
+        , 1000)
+    ).add(->
         undefined
     , [
         "(\"1\"===2)=true"
@@ -634,10 +640,5 @@ steps.push(->
                 }
             ]
         """)
-    ).after((v) ->
-        console.log(v.var1)
-        v.var1 = null
-        console.log(v.var1)
-        console.log("******************all ended!")
     ).run()
 )
