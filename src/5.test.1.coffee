@@ -137,7 +137,6 @@ class wishlist.Test
                             Error Stack: #{error.stack}
                         """
                     )
-                    domain.dispose()
                 )
                 domain.run(=> process.nextTick(=>
                     @fun(@env, @)
@@ -232,7 +231,6 @@ class wishlist.Test
             domain = require("domain").create()
             domain.on("error", (error) =>
                 console.log(error.stack)
-                domain.dispose()
             )
             domain.run(=> process.nextTick(fun))
         else

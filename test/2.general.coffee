@@ -10,19 +10,9 @@ The output should look something like this:
 ********** Exceptional Test **********
 Test: error in async
 Function: function (v, t) {
-      var a, k;
-      setTimeout(function() {
+      return setTimeout(function() {
         return falseFunction();
       }, 2200);
-      k = 0;
-      return a = setInterval(function() {
-        var b;
-        k++;
-        if (k === 20) {
-          clearInterval(a);
-        }
-        return b = 1;
-      }, 1000);
     }
 Error Name: ReferenceError
 Error Message: falseFunction is not defined
@@ -458,12 +448,6 @@ steps.push(->
         setTimeout(->
             falseFunction()
         , 2200)
-        k = 0
-        a = setInterval(->
-            k++
-            if k == 20 then clearInterval(a)
-            b = 1
-        , 1000)
     ).add(->
         undefined
     , [
