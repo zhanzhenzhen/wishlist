@@ -2,13 +2,32 @@
 
 The output should look something like this:
 
-2014-08-18T09:11:30.700Z OK: 13, Exception: 1, Pending: 4
-2014-08-18T09:11:31.670Z OK: 13, Exception: 1, Pending: 4
-qwer
-ReferenceError: inexistentFunction is not defined
+2014-08-20T07:22:03.187Z OK: 1, Exception: 0, Pending: 18
+2014-08-20T07:22:04.174Z OK: 13, Exception: 1, Pending: 5
+2014-08-20T07:22:05.176Z OK: 16, Exception: 1, Pending: 2
+2014-08-20T07:22:06.177Z OK: 17, Exception: 2, Pending: 0
+
+********** Exceptional Test **********
+Test: error in async
+Function: function (v, t) {
+      var a, k;
+      setTimeout(function() {
+        return falseFunction();
+      }, 2200);
+      k = 0;
+      return a = setInterval(function() {
+        var b;
+        k++;
+        if (k === 20) {
+          clearInterval(a);
+        }
+        return b = 1;
+      }, 1000);
+    }
+Error Name: ReferenceError
+Error Message: falseFunction is not defined
+Error Stack: ReferenceError: falseFunction is not defined
     ...
-2014-08-18T09:11:32.670Z OK: 16, Exception: 1, Pending: 1
-2014-08-18T09:11:33.671Z OK: 17, Exception: 1, Pending: 0
 
 ********** Exceptional Test **********
 Test: 
@@ -350,7 +369,7 @@ Expected: is {"me":[Object],"secondMe":[Object],"thirdMe":[Object],"meArray":[Ar
 Expected: = [1,2,3,"asdf","jkl",{"yyy":4,"iii":5,"jjj":NaN,"kkk":null,"mmm e":-10,"d":undefined}]
   Actual: [1,2,3,"asdf","jkl",{"yyy":4,"iii":5,"jjj":NaN,"kkk":null,"mmm e":-9,"d":undefined}]
 
-1 tests of 18 exceptional. 51 wishes of 100 broken. Mark: e739b
+2 tests of 19 exceptional. 51 wishes of 100 broken. Mark: e739b
 
 ###
 
