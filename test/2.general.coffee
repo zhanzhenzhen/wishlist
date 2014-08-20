@@ -2,17 +2,20 @@
 
 The output should look something like this:
 
-2014-08-20T07:22:03.187Z OK: 1, Exception: 0, Pending: 18
-2014-08-20T07:22:04.174Z OK: 13, Exception: 1, Pending: 5
-2014-08-20T07:22:05.176Z OK: 16, Exception: 1, Pending: 2
-2014-08-20T07:22:06.177Z OK: 17, Exception: 2, Pending: 0
+2014-08-20T11:05:06.362Z OK: 13, Exception: 1, Pending: 5
+2014-08-20T11:05:07.330Z OK: 13, Exception: 1, Pending: 5
+2014-08-20T11:05:08.332Z OK: 16, Exception: 1, Pending: 2
+2014-08-20T11:05:09.331Z OK: 17, Exception: 2, Pending: 0
 
 ********** Exceptional Test **********
 Test: error in async
 Function: function (v, t) {
-      return setTimeout(function() {
+      setTimeout(function() {
         return falseFunction();
       }, 2200);
+      return setTimeout(function() {
+        return t.end();
+      }, 2700);
     }
 Error Name: ReferenceError
 Error Message: falseFunction is not defined
@@ -448,6 +451,9 @@ steps.push(->
         setTimeout(->
             falseFunction()
         , 2200)
+        setTimeout(->
+            t.end()
+        , 2700)
     ).add(->
         undefined
     , [
