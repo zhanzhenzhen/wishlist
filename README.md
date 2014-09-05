@@ -4,13 +4,13 @@ Wishlist makes your test more natural, more readable, less redundant, and thus s
 
 Example:
 
-![](http://zhanzhenzhen.github.io/wishlist/demo.gif)
+![](http://zizisoft.com/wishlist/demo.gif)
 
-For asynchronous test and more examples [click here](http://zhanzhenzhen.github.io/wishlist/).
+For asynchronous test and more examples [click here](http://zizisoft.com/wishlist/).
 
 # Tutorial
 
-[Click here for the tutorial.](http://zhanzhenzhen.github.io/wishlist/)
+[Click here for the tutorial.](http://zizisoft.com/wishlist/)
 
 # Contributing
 
