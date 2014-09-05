@@ -14,8 +14,8 @@
         "url": "https://github.com/zhanzhenzhen/wishlist.git"
     },
     "devDependencies": {
-        "coffee-script": "1.7.1",
-        "uglify-js": "2.4.13"
+        "coffee-script": "1.8.0",
+        "uglify-js": "2.4.15"
     },
     "main": "wishlist"
 }
