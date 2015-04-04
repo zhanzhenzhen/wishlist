@@ -1,13 +1,17 @@
 # Why use SHA-256? Is it OK to use CRC32? My answer is:
 # The reason is for security. There's a potential issue if we use a weak algorithm.
-# If the tests include "get info from the web", then attackers may be able to affect the units'
-# true/false results such that it produces the same checksum.
-# These are "user"-caused collisions, which need to be avoided logically.
+# If some tests involve "get info from the web", then an attacker may be able to affect the units'
+# true/false results such that it produces the same checksum as before.
+# For example, we have 5000 units. At least 500 of them involve "get info from the web".
+# A web attacker just need to tamper with these 500 to forge the whole 5000's checksum,
+# so the developer will believe the results haven't changed but actually many of 5000 have.
+# These are "user"-caused collisions, which need to be avoided logically, though
+# it's safe when all traffic is under HTTPS or IPsec.
 #
 # In contrast, it's not necessary when it comes to "developer"-caused deliberate
-# collisions, like the 18-digit number in many of my repos.
-# If another library deliberately uses this name, we can simply
-# discard this library and choose another.
+# collisions, like the 18-digit numbers in many of my repos.
+# If another library later uses this name, we can simply
+# discard this evil library and choose another.
 #
 # I strictly followed the steps on:
 # http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf
