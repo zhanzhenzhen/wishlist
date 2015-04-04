@@ -10,11 +10,13 @@ wishlist.objectIs = (a, b) ->
             a == b
     else
         a == b
+
 wishlist.objectClone = (x) ->
     y = {}
     for key in Object.keys(x)
         y[key] = x[key]
     y
+
 wishlist.hasSameKeys = (obj1, obj2) ->
     keys1 = Object.keys(obj1)
     keys2 = Object.keys(obj2)
@@ -24,6 +26,7 @@ wishlist.hasSameKeys = (obj1, obj2) ->
         keys1.sort()
         keys2.sort()
         keys1.every((key, index) -> keys2[index] == key)
+
 wishlist.valueToMessage = (value) ->
     internal = (value, maxLevel) ->
         if value == undefined
@@ -58,4 +61,5 @@ wishlist.valueToMessage = (value) ->
     r = internal(value, 1) if r.length > 1000
     r = internal(value, 0) if r.length > 1000
     r
+
 wishlist.currentRootTest = null

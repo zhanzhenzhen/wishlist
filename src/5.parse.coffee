@@ -73,6 +73,7 @@ wishlist.parseExpression = (expStr, envNames) ->
         else
             i++
     positions
+
 wishlist.parseWish = (wishStr) ->
     parsed = null
     name = null
@@ -217,7 +218,7 @@ wishlist.parseWish = (wishStr) ->
                                 match[1]
                             ]
                         break
-                    # ]====================
+                    # ]========================================
                 i++
             else
                 i++
@@ -230,6 +231,7 @@ wishlist.parseWish = (wishStr) ->
     )
     parsed.components.push(JSON.stringify((name ? wishStr).trim()))
     parsed
+
 wishlist.parseWishes = (wishesStr) ->
     quote = null
     parenthesis = 0

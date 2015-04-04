@@ -8,7 +8,7 @@ Restriction: On browser it doesn't work well with exceptional tests.
 
 class wishlist.Test
     # `allCount` and `endedCount` refer to all descendant tests including itself.
-    # Both are redundant, but needed (for performance) ==========[
+    # Both are redundant, but needed (for performance)
     constructor: (@name = "") ->
         @_children = []
         @fun = =>
@@ -23,7 +23,7 @@ class wishlist.Test
         @wishResults = []
         @result = null
         @endedCount = 0
-    # ====================]
+
     # syntax: set([name], fun, [wishes], [options])
     set: ->
         name = fun = wishes = rawWishes = options = undefined
@@ -60,6 +60,7 @@ class wishlist.Test
         if rawWishes != undefined then @wishes = wishes
         if options.async != undefined then @async = options.async
         @
+
     setAsync: ->
         args = []
         for m in arguments
@@ -70,8 +71,10 @@ class wishlist.Test
         else
             args.push({async: true})
         @set(args...)
+
     after: (@afterFun) ->
         @
+
     add: ->
         newChild = null
         count = null
@@ -86,6 +89,7 @@ class wishlist.Test
         @_children.push(newChild)
         @getAncestorsAndSelf().forEach((test) => test.allCount += count)
         @
+
     addAsync: ->
         args = []
         for m in arguments
@@ -96,9 +100,11 @@ class wishlist.Test
         else
             args.push({async: true})
         @add(args...)
+
     getChildren: ->
         # use a shallow copy to encapsule `_children` to prevent direct operation on the array
         @_children[..]
+
     getAncestors: ->
         test = @
         r = []
@@ -106,8 +112,10 @@ class wishlist.Test
             r.push(test.parent)
             test = test.parent
         r
+
     getAncestorsAndSelf: ->
         [@].concat(@getAncestors())
+
     # all descendant tests including itself
     getAll: ->
         r = []
@@ -119,12 +127,14 @@ class wishlist.Test
             )
         traverse(@)
         r
+
     run: (isRoot = true) ->
         if isRoot
             wishlist.currentRootTest = @
         @_resetContext()
         if @parent?
             @env = wishlist.objectClone(@parent.env)
+
         # We use `setTimeout(..., 0)` only to make all tests "unordered", at least theoretically.
         setTimeout(=>
             if wishlist.environmentType == "node"
@@ -152,9 +162,11 @@ class wishlist.Test
                 catch
                     @end({type: false})
         , 0)
+
         if isRoot
             allTests = @getAll()
             console.log()
+
             # TODO: Scanning for timeout is now also in this function. It's inaccurate because interval
             # is 1 sec. We may need to create another timer with shorter interval for that.
             timerJob = =>
@@ -207,11 +219,14 @@ class wishlist.Test
                         "Mark: #{mark}"
                     ) + "\n")
                     wishlist.currentRootTest = null
+
             timer = setInterval(timerJob, 1000)
+
             # a delay slightly greater than 0 is useful for preventing a useless heartbeat
             # while there's no async test and computation takes very little time.
             setTimeout(timerJob, 10)
         @
+
     end: (result) ->
         if not @result?
             @result = result ? {type: true}
@@ -227,6 +242,7 @@ class wishlist.Test
                 m.run(false)
             )
         @
+
     _tryCallFun: (fun) ->
         if wishlist.environmentType == "node"
             domain = require("domain").create()
@@ -239,10 +255,12 @@ class wishlist.Test
                 fun()
             catch
                 console.log("Error!")
+
     _checkWish: (wishStr) ->
         # Reason for `that`: CoffeeScript cannot detect `this` keyword in `eval` string,
         # so in `eval` in fat arrow functions we must use `that`.
         that = this
+
         interpret = (s) =>
             wishlist.parseExpression(s, Object.keys(@env)).forEach((m, index) =>
                 insertedString = "that.env."
@@ -264,6 +282,7 @@ class wishlist.Test
                 # Note: Ideally a single "()" pair is enough, but Safari has a strange bug
                 # that makes `eval("(-0)")` return +0. So we must use "(())" to workaround it.
                 args = args.map((m) => eval("((#{m}))"))
+
                 @["_check_" + parsed.type](args...)
             catch
                 type: false
@@ -271,6 +290,7 @@ class wishlist.Test
                 actual: "unknown"
                 expected: "unknown"
         @wishResults.push(result)
+
     wish: (wishesStr) ->
         wishlist.parseWishes(wishesStr).forEach((wishStr) =>
             @_checkWish(wishStr)

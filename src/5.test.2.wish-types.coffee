@@ -33,6 +33,7 @@ wishlist.Test::_check_equal = (actual, ruler, name = "") ->
         result.actual = wishlist.valueToMessage(actual)
         result.expected = "= " + wishlist.valueToMessage(ruler)
     result
+
 wishlist.Test::_check_notEqual = (actual, ruler, name = "") ->
     objects = [] # This variable is to avoid circular object/array.
     determine = (actual, ruler) =>
@@ -68,6 +69,7 @@ wishlist.Test::_check_notEqual = (actual, ruler, name = "") ->
         result.actual = wishlist.valueToMessage(actual)
         result.expected = "≠ " + wishlist.valueToMessage(ruler)
     result
+
 wishlist.Test::_check_is = (actual, ruler, name = "") ->
     result =
         type: wishlist.objectIs(actual, ruler)
@@ -76,6 +78,7 @@ wishlist.Test::_check_is = (actual, ruler, name = "") ->
         result.actual = wishlist.valueToMessage(actual)
         result.expected = "is " + wishlist.valueToMessage(ruler)
     result
+
 wishlist.Test::_check_isnt = (actual, ruler, name = "") ->
     result =
         type: not wishlist.objectIs(actual, ruler)
@@ -84,6 +87,7 @@ wishlist.Test::_check_isnt = (actual, ruler, name = "") ->
         result.actual = wishlist.valueToMessage(actual)
         result.expected = "isn't " + wishlist.valueToMessage(ruler)
     result
+
 wishlist.Test::_check_throws = (fun, ruler, name = "") ->
     passed = false
     resultType =
@@ -111,6 +115,7 @@ wishlist.Test::_check_throws = (fun, ruler, name = "") ->
         result.actual = if passed then "no exception" else "another exception"
         result.expected = if passed then "exception" else "an exception"
     result
+
 wishlist.Test::_check_doesNotThrow = (fun, name = "") ->
     resultType =
         try
@@ -125,6 +130,7 @@ wishlist.Test::_check_doesNotThrow = (fun, name = "") ->
         result.actual = "exception"
         result.expected = "no exception"
     result
+
 wishlist.Test::_check_lessThan = (actual, ruler, name = "") ->
     result =
         type: actual < ruler
@@ -133,6 +139,7 @@ wishlist.Test::_check_lessThan = (actual, ruler, name = "") ->
         result.actual = wishlist.valueToMessage(actual)
         result.expected = "< " + wishlist.valueToMessage(ruler)
     result
+
 wishlist.Test::_check_lessThanOrEqual = (actual, ruler, name = "") ->
     result =
         type: actual <= ruler
@@ -141,6 +148,7 @@ wishlist.Test::_check_lessThanOrEqual = (actual, ruler, name = "") ->
         result.actual = wishlist.valueToMessage(actual)
         result.expected = "<= " + wishlist.valueToMessage(ruler)
     result
+
 wishlist.Test::_check_greaterThan = (actual, ruler, name = "") ->
     result =
         type: actual > ruler
@@ -149,6 +157,7 @@ wishlist.Test::_check_greaterThan = (actual, ruler, name = "") ->
         result.actual = wishlist.valueToMessage(actual)
         result.expected = "> " + wishlist.valueToMessage(ruler)
     result
+
 wishlist.Test::_check_greaterThanOrEqual = (actual, ruler, name = "") ->
     result =
         type: actual >= ruler
