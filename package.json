@@ -1,6 +1,6 @@
 {
     "name": "wishlist",
-    "version": "0.3.3",
+    "version": "0.3.4",
     "description": "Super natural testing framework.",
     "keywords": [
         "test", "testing", "async", "unit", "bdd", "tdd", "asynchronous", "assertion", "assert",
@@ -14,8 +14,8 @@
         "url": "https://github.com/zhanzhenzhen/wishlist.git"
     },
     "devDependencies": {
-        "coffee-script": "1.8.0",
-        "uglify-js": "2.4.15"
+        "coffee-script": "1.9.1",
+        "uglify-js": "2.4.19"
     },
     "main": "wishlist"
 }
