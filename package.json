@@ -7,7 +7,7 @@
         "mocha", "qunit", "karma", "jasmine", "vows", "qunitjs", "chai"
     ],
     "author": "Zhenzhen Zhan <zhanzhenzhen@hotmail.com>",
-    "homepage": "http://zizisoft.com/wishlist/",
+    "homepage": "http://zizisoft.com/wishlist",
     "license": "MIT",
     "repository": {
         "type": "git",

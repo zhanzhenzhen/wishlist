@@ -1,16 +1,10 @@
 # Wishlist
 
-Wishlist makes your test more natural, more readable, less redundant, and thus speeds up your test writing.
+Wishlist makes your test look super natural, and runs in browser and node.
 
-Example:
+# Getting Started
 
-![](http://zizisoft.com/wishlist/demo.gif)
-
-For asynchronous test and more examples [click here](http://zizisoft.com/wishlist/).
-
-# Tutorial
-
-[Click here for the tutorial.](http://zizisoft.com/wishlist/)
+[Click here](http://zizisoft.com/wishlist) or visit "http://zizisoft.com/wishlist".
 
 # Contributing
 
