@@ -1,4 +1,5 @@
 # This function is equivalent to ECMAScript 6th's `Object.is`.
+# Not limited to the object type.
 wishlist.objectIs = (a, b) ->
     if typeof a == "number" and typeof b == "number"
         if a == 0 and b == 0
@@ -14,6 +15,15 @@ wishlist.objectClone = (x) ->
     for key in Object.keys(x)
         y[key] = x[key]
     y
+wishlist.hasSameKeys = (obj1, obj2) ->
+    keys1 = Object.keys(obj1)
+    keys2 = Object.keys(obj2)
+    if keys1.length != keys2.length
+        false
+    else
+        keys1.sort()
+        keys2.sort()
+        keys1.every((key, index) -> keys2[index] == key)
 wishlist.valueToMessage = (value) ->
     internal = (value, maxLevel) ->
         if value == undefined

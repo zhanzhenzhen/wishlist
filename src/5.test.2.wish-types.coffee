@@ -2,7 +2,7 @@ wishlist.Test::_check_equal = (actual, ruler, name = "") ->
     objects = [] # This variable is to avoid circular object/array.
     determine = (actual, ruler) =>
         if Array.isArray(actual) and Array.isArray(ruler)
-            if ruler.every((m, index) =>
+            if actual.length == ruler.length and ruler.every((m, index) =>
                 if m in objects
                     wishlist.objectIs(actual[index], m)
                 else
@@ -14,7 +14,7 @@ wishlist.Test::_check_equal = (actual, ruler, name = "") ->
                 false
         else if typeof actual == "object" and actual != null and
                 typeof ruler == "object" and ruler != null
-            if Object.keys(ruler).every((m) =>
+            if wishlist.hasSameKeys(actual, ruler) and Object.keys(ruler).every((m) =>
                 if ruler[m] in objects
                     wishlist.objectIs(actual[m], ruler[m])
                 else
@@ -37,7 +37,7 @@ wishlist.Test::_check_notEqual = (actual, ruler, name = "") ->
     objects = [] # This variable is to avoid circular object/array.
     determine = (actual, ruler) =>
         if Array.isArray(actual) and Array.isArray(ruler)
-            if ruler.some((m, index) =>
+            if actual.length != ruler.length or ruler.some((m, index) =>
                 if m in objects
                     not wishlist.objectIs(actual[index], m)
                 else
@@ -49,7 +49,7 @@ wishlist.Test::_check_notEqual = (actual, ruler, name = "") ->
                 false
         else if typeof actual == "object" and actual != null and
                 typeof ruler == "object" and ruler != null
-            if Object.keys(ruler).some((m) =>
+            if not wishlist.hasSameKeys(actual, ruler) or Object.keys(ruler).some((m) =>
                 if ruler[m] in objects
                     not wishlist.objectIs(actual[m], ruler[m])
                 else

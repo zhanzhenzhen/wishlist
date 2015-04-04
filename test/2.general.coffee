@@ -523,6 +523,8 @@ steps.push(->
         t.wish(' {a:1,b:2}<>{a:1,b:1} ')
         t.wish(' {a:1,b:2}<>{a:1,b:2} ')
         t.wish(' {a:1,b:2}<>{a:1,b:2,c:function(){}} ')
+        t.wish(' {a:1,b:2,c:function(){}}={a:1,b:2} ')
+        t.wish(' {a:1,b:2,c:function(){}}<>{a:1,b:2} ')
         t.wish(' 8 isnt 4 ')
         t.wish(' NaN isnt NaN ')
         t.wish(' {} isnt {} ')
