@@ -2,10 +2,10 @@
 
 The output should look something like this:
 
-2014-08-20T11:05:06.362Z OK: 13, Exception: 1, Pending: 5
-2014-08-20T11:05:07.330Z OK: 13, Exception: 1, Pending: 5
-2014-08-20T11:05:08.332Z OK: 16, Exception: 1, Pending: 2
-2014-08-20T11:05:09.331Z OK: 17, Exception: 2, Pending: 0
+2015-04-04T16:31:44.327Z OK: 13, Exception: 1, Pending: 5
+2015-04-04T16:31:45.297Z OK: 13, Exception: 1, Pending: 5
+2015-04-04T16:31:46.298Z OK: 16, Exception: 1, Pending: 2
+2015-04-04T16:31:47.300Z OK: 17, Exception: 2, Pending: 0
 
 ********** Exceptional Test **********
 Test: error in async
@@ -268,6 +268,12 @@ Expected: ≠ {"a":1,"b":2}
 
 ********** Broken Wish **********
     Test: root --> 
+    Wish: {a:1,b:2,c:function(){}}={a:1,b:2}
+Expected: = {"a":1,"b":2}
+  Actual: {"a":1,"b":2,"c":[Function]}
+
+********** Broken Wish **********
+    Test: root --> 
     Wish: NaN isnt NaN
 Expected: isn't NaN
   Actual: NaN
@@ -362,7 +368,7 @@ Expected: is {"me":[Object],"secondMe":[Object],"thirdMe":[Object],"meArray":[Ar
 Expected: = [1,2,3,"asdf","jkl",{"yyy":4,"iii":5,"jjj":NaN,"kkk":null,"mmm e":-10,"d":undefined}]
   Actual: [1,2,3,"asdf","jkl",{"yyy":4,"iii":5,"jjj":NaN,"kkk":null,"mmm e":-9,"d":undefined}]
 
-2 tests of 19 exceptional. 51 wishes of 100 broken. Mark: e739b
+2 tests of 19 exceptional. 52 wishes of 102 broken. Mark: 0332c
 
 ###
 
