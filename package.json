@@ -15,7 +15,7 @@
     },
     "devDependencies": {
         "coffee-script": "1.9.1",
-        "uglify-js": "2.4.19"
+        "uglify-js": "3.6.6"
     },
     "main": "wishlist"
 }
